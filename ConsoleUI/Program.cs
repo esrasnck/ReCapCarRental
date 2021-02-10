@@ -19,12 +19,12 @@ namespace ConsoleUI
             //InputFromConsole(carManager);
             //CarList(carManager);
 
+
             foreach (CarDetailDto item in carManager.GetCarDetails())
             {
                 Console.WriteLine($"Araba Adı : {item.CarName}, Marka Adı :{item.BrandName}, Araba Rengi : {item.ColorName}, Günlük fiyatı :{item.DailyPrice}");
             }
        
-
 
         }
 

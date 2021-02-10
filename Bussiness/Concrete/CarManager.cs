@@ -41,12 +41,31 @@ namespace Bussiness.Concrete
 
         public void UpdateCar(Car car)
         {
-            _carDal.Update(car);
+            Car carFind = _carDal.GetByID(car.CarId);
+            if (carFind == null)
+            {
+                Console.WriteLine("Güncellenecek araba bulunmamaktadır.");
+            }
+            else
+            {
+                _carDal.Update(car);
+            }
+         
         }
 
         public void DeleteCar(Car car)
         {
-            _carDal.Delete(car);
+            Car carFind = _carDal.GetByID(car.CarId);
+            if (carFind == null)
+            {
+                Console.WriteLine("silinecek araba bulunmamaktadır.");
+            }
+            else
+            {
+                _carDal.Delete(car);
+            }
+
+           
         }
         public List<Car> GetAll()
         {

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Bussiness.Concrete
 {
-   public class ColorManager:IColorService
+    public class ColorManager : IColorService
     {
         private IColorDal _colorDal;
 
@@ -32,16 +32,32 @@ namespace Bussiness.Concrete
 
         public void DeleteColor(Color color)
         {
-            _colorDal.Delete(color);
+            Color colorFind = _colorDal.GetByID(color.ColorId);
+            if (colorFind == null)
+            {
+                Console.WriteLine("silinecek renk yoktur");
+            }
+            else
+            {
+                _colorDal.Delete(color);
+            }
         }
 
         public void UpdateColor(Color color)
         {
-            _colorDal.Update(color);
+            Color colorFind = _colorDal.GetByID(color.ColorId);
+            if (colorFind == null)
+            {
+                Console.WriteLine("güncellenecek renk yoktur");
+            }
+            else
+            {
+                _colorDal.Update(color);
+            }
         }
 
-      
 
-   
+
+
     }
 }

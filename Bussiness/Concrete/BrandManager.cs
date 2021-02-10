@@ -30,13 +30,33 @@ namespace Bussiness.Concrete
             _brandDal.Add(brand);
         }
 
-        public void UpdateBrand(Brand brand)
+        public void UpdateBrand(Brand brand)// azcık kal sen burada
         {
-            _brandDal.Update(brand);
+            Brand brandFind = _brandDal.GetByID(brand.BrandId);
+            if (brandFind==null)
+            {
+                Console.WriteLine("marka bulunmamaktadır");
+               
+            }
+            else
+            {
+                _brandDal.Update(brand);
+            }
+            
+           
         }
-        public void DeleteBrand(Brand brand)
+        public void DeleteBrand(Brand brand)  // dönecem ben sana
         {
-            _brandDal.Delete(brand);
+            Brand brandFind = _brandDal.GetByID(brand.BrandId);
+            if (brandFind == null)
+            {
+                Console.WriteLine("silinecek marka bulunmamaktadır");
+            }
+            else
+            {
+                _brandDal.Delete(brand);
+            }
+           
         }
     }
 }
