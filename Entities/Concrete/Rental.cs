@@ -18,5 +18,8 @@ namespace Entities.Concrete
         public DateTime RentDate { get; set; }
 
         public DateTime? ReturnDate { get; set; }
+
+        public bool StilRented { get; set; } // todo: şunu bir düşün !!!
+
     }
 }

@@ -65,5 +65,27 @@ namespace Bussiness.Constants.Messages
         public static string UserExist = "Kullanıcı mevcut";
         public static string UserRegistered = "Kullanıcı başarıyla kaydedildi.";
 
+
+        // rental 
+
+        public static string RentalListed = "Kiralık Arabalar Listesi";
+        public static string RentalById = "kiralık araç getirildi.";
+        public static string RentalAdded = "Araç Kiralandı";
+        public static string RentalNotAdded = "Araç Kiralanamadı";
+        public static string RentalNotDeleted = "Kiralık araç silinemedi";
+        public static string RentalDeleted = "Kiralık araç silindi";
+        public static string RentalNotUpdated = "Kiralık araç Güncellenemedi";
+        public static string RentalUpdated = "Kiralık araç Güncellendi";
+
+        // customer
+
+        public static string CustomerListed = "Müşteriler Listelendi";
+        public static string CustomerById = "Müşteri getirildi";
+        public static string CustomerAdded = "Müşteri eklendi";
+        public static string CustomerNotDeleted = "Müşteri silinemedi";
+        public static string CustomerDeleted = "Müşteri silindi";
+        public static string CustomerNotUpdated = "Müşteri güncellenemedi";
+        public static string CustomerUpdated = "Müşteri güncellendi";
+       
     }
 }

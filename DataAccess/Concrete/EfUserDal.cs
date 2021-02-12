@@ -13,7 +13,7 @@ namespace DataAccess.Concrete
     public class EfUserDal : EfEntityRepositoryBase<User, RentACarContext>, IUserDal
     { 
         // todo: buraya dön => oldu sanki :)
-        public List<Customer> GetCustomers(User user)
+        public List<Customer> GetCustomers(User user) // joinledim :(
         {
             using (RentACarContext context= new RentACarContext())
             {
