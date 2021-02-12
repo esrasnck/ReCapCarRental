@@ -79,10 +79,10 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour ==22)
-            {
-                return new ErrorDataResult<List<Car>>(Messages.MaintanceTime);
-            }
+            //if (DateTime.Now.Hour ==22)
+            //{
+            //    return new ErrorDataResult<List<Car>>(Messages.MaintanceTime);
+            //}
             return new SuccessDataResult<List<Car>> (_carDal.GetAll(),Messages.CarListed);
         }
 
@@ -102,6 +102,10 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
+            if (DateTime.Now.Hour==21)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintanceTime);
+            }
             return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetail(),Messages.CarDetailList);
         }
 

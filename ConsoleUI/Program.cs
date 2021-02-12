@@ -1,9 +1,11 @@
 ﻿using Bogus.DataSets;
 using Bussiness.Concrete;
+using Core.Utilities.Results;
 using DataAccess.Concrete;
 using Entities.Concrete;
 using Entities.Dtos;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleUI
 {
@@ -18,12 +20,22 @@ namespace ConsoleUI
 
             //InputFromConsole(carManager);
             //CarList(carManager);
+            
+            IDataResult<List<CarDetailDto>> result = carManager.GetCarDetails();
 
-
-            foreach (CarDetailDto item in carManager.GetCarDetails())
+            if (result.Success ==true)
             {
-                Console.WriteLine($"Araba Adı : {item.CarName}, Marka Adı :{item.BrandName}, Araba Rengi : {item.ColorName}, Günlük fiyatı :{item.DailyPrice}");
+                foreach (CarDetailDto item in result.Data)
+                {
+                    Console.WriteLine($"Araba Adı : {item.CarName}, Marka Adı :{item.BrandName}, Araba Rengi : {item.ColorName}, Günlük fiyatı :{item.DailyPrice}");
+                }
+                
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+         
 
        
 
@@ -31,7 +43,7 @@ namespace ConsoleUI
 
         private static void CarList(CarManager carManager)
         {
-            foreach (Car item in carManager.GetAll())
+            foreach (Car item in carManager.GetAll().Data)
             {
                 Console.WriteLine($"Araba Açıklaması : {item.CarName} - Fiyatı : {item.DailyPrice} - Yılı : {item.ModelYear}");
             }
