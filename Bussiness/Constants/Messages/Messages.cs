@@ -57,5 +57,13 @@ namespace Bussiness.Constants.Messages
 
         public static string MaintanceTime = "Sistem kapalı, bakımda";
 
+
+        // user 
+        public static string UserNotFound = "Kullanıcı bulunamadı";
+        public static string PasswordError = "şifre bulunamadı ";
+        public static string SuccessfullLogin = "Sisteme giriş başarılı ";
+        public static string UserExist = "Kullanıcı mevcut";
+        public static string UserRegistered = "Kullanıcı başarıyla kaydedildi.";
+
     }
 }
