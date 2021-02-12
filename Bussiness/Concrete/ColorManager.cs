@@ -1,4 +1,6 @@
 ﻿using Bussiness.Abstract;
+using Bussiness.Constants.Messages;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -16,43 +18,46 @@ namespace Bussiness.Concrete
             _colorDal = colorDal;
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            return new SuccessDataResult<List<Color>> (_colorDal.GetAll(),Messages.ColorListed);
         }
 
-        public Color GetByColorID(int id)
+        public IDataResult<Color> GetByColorID(int id)
         {
-            return _colorDal.GetByID(id);
+            return new SuccessDataResult<Color>(_colorDal.Get(x=> x.ColorId==id),Messages.ColorByID);
         }
-        public void AddAColor(Color color)
+        public IResult AddAColor(Color color)
         {
             _colorDal.Add(color);
+            return new SuccessResult(Messages.ColorAdded);
         }
 
-        public void DeleteColor(Color color)
+        public IResult DeleteColor(Color color)
         {
             Color colorFind = _colorDal.GetByID(color.ColorId);
             if (colorFind == null)
             {
-                Console.WriteLine("silinecek renk yoktur");
+                return new ErrorResult(Messages.CarNotDeleted);
             }
             else
             {
                 _colorDal.Delete(color);
+                return new SuccessResult(Messages.ColorDeleted);
             }
         }
 
-        public void UpdateColor(Color color)
+        public IResult UpdateColor(Color color)
         {
             Color colorFind = _colorDal.GetByID(color.ColorId);
             if (colorFind == null)
             {
-                Console.WriteLine("güncellenecek renk yoktur");
+                return new ErrorResult(Messages.CarNotUpdated);
             }
             else
             {
                 _colorDal.Update(color);
+                return new SuccessResult(Messages.ColorUpdated);
             }
         }
 

@@ -1,4 +1,6 @@
 ﻿using Bussiness.Abstract;
+using Bussiness.Constants.Messages;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -15,46 +17,49 @@ namespace Bussiness.Concrete
             _brandDal = brandDal;
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(),Messages.BrandListed);
         }
 
-        public Brand GetByBrandId(int id)
+        public IDataResult<Brand> GetByBrandId(int id)
         {
-            return _brandDal.GetByID(id);
+            return new SuccessDataResult<Brand> (_brandDal.Get(x=> x.BrandId == id),Messages.BrandByID);
         }
 
-        public void AddBrand(Brand brand)
+        public IResult AddBrand(Brand brand)
         {
             _brandDal.Add(brand);
+            return new SuccessResult(Messages.BrandAdded);
         }
 
-        public void UpdateBrand(Brand brand)// azcık kal sen burada
+        public IResult UpdateBrand(Brand brand)// azcık kal sen burada
         {
             Brand brandFind = _brandDal.GetByID(brand.BrandId);
             if (brandFind==null)
             {
-                Console.WriteLine("marka bulunmamaktadır");
-               
+                return new ErrorResult(Messages.BrandNotDeleted);
+
             }
             else
             {
                 _brandDal.Update(brand);
+                return new SuccessResult(Messages.BrandAdded);
             }
             
            
         }
-        public void DeleteBrand(Brand brand)  // dönecem ben sana
+        public IResult DeleteBrand(Brand brand)  // dönecem ben sana
         {
             Brand brandFind = _brandDal.GetByID(brand.BrandId);
             if (brandFind == null)
             {
-                Console.WriteLine("silinecek marka bulunmamaktadır");
+                return new ErrorResult(Messages.BrandNotDeleted);
             }
             else
             {
                 _brandDal.Delete(brand);
+                return new SuccessResult(Messages.BrandDeleted);
             }
            
         }

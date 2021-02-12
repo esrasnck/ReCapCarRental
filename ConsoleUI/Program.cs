@@ -24,6 +24,7 @@ namespace ConsoleUI
             {
                 Console.WriteLine($"Araba Adı : {item.CarName}, Marka Adı :{item.BrandName}, Araba Rengi : {item.ColorName}, Günlük fiyatı :{item.DailyPrice}");
             }
+
        
 
         }
