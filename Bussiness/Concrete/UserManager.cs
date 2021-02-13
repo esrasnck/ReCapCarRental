@@ -27,9 +27,5 @@ namespace Bussiness.Concrete
             return _userDal.Get(x => x.Email == email);
         }
 
-        public List<Customer> GetCustomers(User user)
-        {
-           return _userDal.GetCustomers(user);
-        }
     }
 }

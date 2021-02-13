@@ -7,7 +7,7 @@ namespace Bussiness.Abstract
 {
     public interface IUserService
     {
-        List<Customer> GetCustomers(User user);
+    
 
         void Add(User user);
 

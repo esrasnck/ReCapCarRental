@@ -8,6 +8,6 @@ namespace DataAccess.Abstract
 {
     public interface IUserDal: IEntityRepository<User>
     {
-       List<Customer> GetCustomers(User user);
+       
     }
 }
