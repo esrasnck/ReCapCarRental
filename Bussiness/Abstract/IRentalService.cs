@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,5 +14,10 @@ namespace Bussiness.Abstract
         IResult AddRentalCar(Rental rental);
         IResult DeleteRentalCar(Rental rental);
         IResult UpdateRentalCar(Rental rental);
+         IDataResult<List<RentalDetailDto>> GetRentalDetailsDto(int carId);
+
+        // bakmak gerek
+        IResult CheckReturnDate(int carId);
+        IResult UpdateReturnDate(int carId);
     }
 }

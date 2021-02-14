@@ -18,8 +18,14 @@ namespace Bussiness.Abstract
         IResult AddACar(Car car);
         IResult UpdateCar(Car car);
         IResult DeleteCar(Car car);
+
+        IDataResult<List<CarDetailDto>> GetCarDetails();
+
+        // todo : HANGİ TARAF DOĞRU BAK
         IDataResult<List<Car>> GetByColorId(int id);
         IDataResult<List<Car>> GetByBrandId(int id);
-        IDataResult<List<CarDetailDto>> GetCarDetails();
+       
+        IDataResult<List<CarDetailDto>> GetCarsByBrandId(int Brandid);
+        IDataResult<List<CarDetailDto>> GetCarsByColorId(int Colorid);
     }
 }
