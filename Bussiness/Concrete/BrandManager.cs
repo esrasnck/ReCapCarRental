@@ -35,7 +35,8 @@ namespace Bussiness.Concrete
         {
             if (brand != null)
             {
-                if (_brandDal.Any(x => x.BrandId != brand.BrandId && x.BrandName != brand.BrandName))
+
+                if (!_brandDal.Any(x => x.BrandName.Contains(brand.BrandName)))
                 {
                     _brandDal.Add(brand);
                     return new SuccessResult(Messages.BrandAdded);
@@ -49,30 +50,53 @@ namespace Bussiness.Concrete
         {
             if (brand != null)
             {
-                if (brand.BrandId > 0 && _brandDal.Any(x => x.BrandId == brand.BrandId))
+                if (_brandDal.Any(x => x.BrandId == brand.BrandId) || _brandDal.Any(x => x.BrandName.Contains(brand.BrandName)))
                 {
-
-                    Brand brandFind = _brandDal.GetByID(brand.BrandId);
-                    if (brandFind == null)
+                    if (brand.BrandId > 0)
                     {
-                        return new ErrorResult(Messages.BrandNotUpdated);
-
-                    }
-                    else
-                    {
-                        if (brand.BrandName != null)
+                        Brand brandFind = _brandDal.GetByID(brand.BrandId);
+                        if (brandFind == null)
                         {
-                            brandFind.BrandName = brand.BrandName;
-                            _brandDal.Update(brandFind);
-                            return new SuccessResult(Messages.BrandUpdated);
+                            return new ErrorResult(Messages.BrandNotUpdated);
+
                         }
-                        return new ErrorResult(Messages.BrandNotUpdated);
+                        else
+                        {
+                            if (brand.BrandName != null)
+                            {
+                                brandFind.BrandName = brand.BrandName;
+                                _brandDal.Update(brandFind);
+                                return new SuccessResult(Messages.BrandUpdated);
+                            }
+                            return new ErrorResult(Messages.BrandNotUpdated);
+                        }
                     }
+                    #region forFun:)
+                    //else
+                    //{
+                    //    Brand brandFind = _brandDal.FirstOrDefault(x=> x.BrandName == brand.BrandName);
+                    //    if (brandFind == null)
+                    //    {
+                    //        return new ErrorResult(Messages.BrandNotUpdated);
+
+                    //    }
+                    //    else
+                    //    {
+                    //        if (brand.BrandName != null)
+                    //        {
+                    //            brandFind.BrandName = brand.BrandName;
+                    //            _brandDal.Update(brandFind);
+                    //            return new SuccessResult(Messages.BrandUpdated);
+                    //        }
+                    //        return new ErrorResult(Messages.BrandNotUpdated);
+                    //    }
+                    //}
+                    #endregion
                 }
             }
             return new ErrorResult(Messages.BrandNotUpdated);
         }
-        public IResult DeleteBrand(Brand brand)  // dönecem ben sana
+        public IResult DeleteBrand(Brand brand) 
         {
             if (brand != null)
             {

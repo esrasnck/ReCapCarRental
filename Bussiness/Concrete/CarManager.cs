@@ -19,7 +19,7 @@ namespace Bussiness.Concrete
             _carDal = carDal;
         }
 
-        // tamamdır
+      
         public IResult AddACar(Car car)
         {
             if (car != null)
@@ -34,17 +34,21 @@ namespace Bussiness.Concrete
 
                     return new ErrorResult(Messages.CarDailyPrice);
                 }
-                else
+                else if (!_carDal.Any(x=>x.CarName.Contains(car.CarName)))
                 {
                     _carDal.Add(car);
 
                     return new SuccessResult(Messages.CarAdded);
                 }
+                else
+                {
+                    return new ErrorResult(Messages.CarNotAdded);
+                }
             }
             return new ErrorResult(Messages.CarNotAdded);
         }
 
-        // tamadır
+      
         public IResult UpdateCar(Car car)
         {
             if (_carDal.Any(x => x.CarId == car.CarId))
@@ -129,7 +133,7 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(x => x.CarId == id), Messages.CarByID);
         }
 
-        // tamamdır
+       
         public IDataResult<List<Car>> GetByBrandId(int id)
         {
             if (id != 0 && _carDal.Any(x => x.BrandId == id))
@@ -147,7 +151,7 @@ namespace Bussiness.Concrete
 
 
         }
-        // tamamdır
+      
         public IDataResult<List<Car>> GetByColorId(int id)
         {
             if (id != 0 && _carDal.Any(x => x.ColorId == id))
@@ -162,9 +166,6 @@ namespace Bussiness.Concrete
             return new ErrorDataResult<List<Car>>(Messages.IdNotFound);
 
         }
-
-
-
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {

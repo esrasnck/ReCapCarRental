@@ -36,7 +36,7 @@ namespace Bussiness.Concrete
         {
             if (color != null)
             {
-                if (_colorDal.Any(x => x.ColorId != color.ColorId && x.ColorName != color.ColorName))
+                if (!_colorDal.Any(x => x.ColorName.Contains(color.ColorName)))
                 {
                     _colorDal.Add(color);
                     return new SuccessResult(Messages.ColorAdded);
