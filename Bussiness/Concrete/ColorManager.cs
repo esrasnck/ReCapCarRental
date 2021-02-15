@@ -20,45 +20,83 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<Color>> GetAll()
         {
-            return new SuccessDataResult<List<Color>> (_colorDal.GetAll(),Messages.ColorListed);
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ColorListed);
         }
 
         public IDataResult<Color> GetByColorID(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(x=> x.ColorId==id),Messages.ColorByID);
+            if (id > 0 && _colorDal.Any(x => x.ColorId == id))
+            {
+                return new SuccessDataResult<Color>(_colorDal.Get(x => x.ColorId == id), Messages.ColorByID);
+            }
+            return new ErrorDataResult<Color>(Messages.NotColorByID);
+
         }
         public IResult AddAColor(Color color)
         {
-            _colorDal.Add(color);
-            return new SuccessResult(Messages.ColorAdded);
+            if (color != null)
+            {
+                if (_colorDal.Any(x => x.ColorId != color.ColorId && x.ColorName != color.ColorName))
+                {
+                    _colorDal.Add(color);
+                    return new SuccessResult(Messages.ColorAdded);
+                }
+                return new ErrorResult(Messages.ColorAlreadyExist);
+            }
+            return new ErrorResult(Messages.ColorNotAdded);
+
         }
 
         public IResult DeleteColor(Color color)
         {
-            Color colorFind = _colorDal.GetByID(color.ColorId);
-            if (colorFind == null)
+            if (color != null)
             {
-                return new ErrorResult(Messages.CarNotDeleted);
+                if (_colorDal.Any(x=> x.ColorId == color.ColorId))
+                {
+                    Color colorFind = _colorDal.GetByID(color.ColorId);
+                    if (colorFind == null)
+                    {
+                        return new ErrorResult(Messages.CarNotDeleted);
+                    }
+                    else
+                    {
+                        _colorDal.Delete(color);
+                        return new SuccessResult(Messages.ColorDeleted);
+                    }
+
+                }
+                return new ErrorResult(Messages.ColorNotDeleted);
             }
-            else
-            {
-                _colorDal.Delete(color);
-                return new SuccessResult(Messages.ColorDeleted);
-            }
+            return new ErrorResult(Messages.ColorNotDeleted);
         }
 
         public IResult UpdateColor(Color color)
         {
-            Color colorFind = _colorDal.GetByID(color.ColorId);
-            if (colorFind == null)
+            if (color != null)
             {
-                return new ErrorResult(Messages.CarNotUpdated);
+                if (color.ColorId>0 && _colorDal.Any(x=> x.ColorId == color.ColorId))
+                {
+                    Color colorFind = _colorDal.GetByID(color.ColorId);
+                    if (colorFind == null)
+                    {
+                        return new ErrorResult(Messages.CarNotUpdated);
+                    }
+                    else
+                    {
+                        if (color.ColorName != null)
+                        {
+                            colorFind.ColorName = color.ColorName;
+                            _colorDal.Update(colorFind);
+                            return new SuccessResult(Messages.ColorUpdated);
+                        }
+                        return new ErrorResult(Messages.ColorNotUpdated);
+                    }
+                }
+                return new ErrorResult(Messages.ColorNotUpdated);
+           
+        
             }
-            else
-            {
-                _colorDal.Update(color);
-                return new SuccessResult(Messages.ColorUpdated);
-            }
+            return new ErrorResult(Messages.ColorNotUpdated);
         }
 
 

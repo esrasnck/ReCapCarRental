@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Bussiness.Concrete
 {
-    public class BrandManager:IBrandService
+    public class BrandManager : IBrandService
     {
         IBrandDal _brandDal;
         public BrandManager(IBrandDal brandDal)
@@ -19,49 +19,79 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<Brand>> GetAll()
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(),Messages.BrandListed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandListed);
         }
 
         public IDataResult<Brand> GetByBrandId(int id)
         {
-            return new SuccessDataResult<Brand> (_brandDal.Get(x=> x.BrandId == id),Messages.BrandByID);
-        }
+            if (id > 0 && _brandDal.Any(x => x.BrandId == id))
+            {
+                return new SuccessDataResult<Brand>(_brandDal.Get(x => x.BrandId == id), Messages.BrandByID);
+            }
+            return new ErrorDataResult<Brand>(Messages.NotBrandByID);
 
+        }
         public IResult AddBrand(Brand brand)
         {
-            _brandDal.Add(brand);
-            return new SuccessResult(Messages.BrandAdded);
-        }
+            if (brand != null)
+            {
+                if (_brandDal.Any(x => x.BrandId != brand.BrandId && x.BrandName != brand.BrandName))
+                {
+                    _brandDal.Add(brand);
+                    return new SuccessResult(Messages.BrandAdded);
+                }
+                return new ErrorResult(Messages.BrandAllreadyExist);
+            }
+            return new ErrorResult(Messages.BrandNotAdded);
 
+        }
         public IResult UpdateBrand(Brand brand)// azcık kal sen burada
         {
-            Brand brandFind = _brandDal.GetByID(brand.BrandId);
-            if (brandFind==null)
+            if (brand != null)
             {
-                return new ErrorResult(Messages.BrandNotDeleted);
+                if (brand.BrandId > 0 && _brandDal.Any(x => x.BrandId == brand.BrandId))
+                {
 
+                    Brand brandFind = _brandDal.GetByID(brand.BrandId);
+                    if (brandFind == null)
+                    {
+                        return new ErrorResult(Messages.BrandNotUpdated);
+
+                    }
+                    else
+                    {
+                        if (brand.BrandName != null)
+                        {
+                            brandFind.BrandName = brand.BrandName;
+                            _brandDal.Update(brandFind);
+                            return new SuccessResult(Messages.BrandUpdated);
+                        }
+                        return new ErrorResult(Messages.BrandNotUpdated);
+                    }
+                }
             }
-            else
-            {
-                _brandDal.Update(brand);
-                return new SuccessResult(Messages.BrandAdded);
-            }
-            
-           
+            return new ErrorResult(Messages.BrandNotUpdated);
         }
         public IResult DeleteBrand(Brand brand)  // dönecem ben sana
         {
-            Brand brandFind = _brandDal.GetByID(brand.BrandId);
-            if (brandFind == null)
+            if (brand != null)
             {
+                if (_brandDal.Any(x => x.BrandId == brand.BrandId))
+                {
+                    Brand brandFind = _brandDal.GetByID(brand.BrandId);
+                    if (brandFind == null)
+                    {
+                        return new ErrorResult(Messages.BrandNotDeleted);
+                    }
+                    else
+                    {
+                        _brandDal.Delete(brand);
+                        return new SuccessResult(Messages.BrandDeleted);
+                    }
+                }
                 return new ErrorResult(Messages.BrandNotDeleted);
             }
-            else
-            {
-                _brandDal.Delete(brand);
-                return new SuccessResult(Messages.BrandDeleted);
-            }
-           
+            return new ErrorResult(Messages.BrandNotDeleted);
         }
     }
 }

@@ -9,8 +9,26 @@ using System.Text;
 
 namespace DataAccess.Concrete
 {
-    public class EfCarDal :  EfEntityRepositoryBase<Car, RentACarContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, RentACarContext>, ICarDal
     {
+        public List<CarForDeleteDto> GetCars()
+        {
+            using (RentACarContext context = new RentACarContext())
+            {
+                IQueryable<CarForDeleteDto> carForDelete = from c in context.Cars
+                                                           join r in context.Rentals
+                                                           on c.CarId equals r.CarId
+                                                           select new CarForDeleteDto
+                                                           {
+                                                               CarId = c.CarId,
+                                                               RentalId = r.RentalId,
+                                                               RentedDate = r.RentDate,
+                                                               ReturnedDate = r.ReturnDate
+                                                           };
+                return carForDelete.ToList();
+
+            }
+        }
 
         public List<CarDetailDto> GetCarDetail()
         {
@@ -25,13 +43,13 @@ namespace DataAccess.Concrete
                                                       {
                                                           Id = c.CarId,
                                                           BrandId = b.BrandId,
-                                                          ColorId=cl.ColorId,
+                                                          ColorId = cl.ColorId,
                                                           CarName = c.CarName,
                                                           BrandName = b.BrandName,
                                                           ColorName = cl.ColorName,
-                                                          ModelYear=c.ModelYear,
+                                                          ModelYear = c.ModelYear,
                                                           DailyPrice = c.DailyPrice.ToString(),
-                                                          Description=c.Description
+                                                          Description = c.Description
                                                       };
 
                 return carDetails.ToList();

@@ -1,4 +1,5 @@
 ﻿using Bussiness.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +18,61 @@ namespace WebAPI.Controllers
         public ColorsController(IColorService colorService)
         {
             _colorService = colorService;
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var result = _colorService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet]
+        public IActionResult GetById(int id)
+        {
+            var result = _colorService.GetByColorID(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult ColorAdd([FromBody] Color color)
+        {
+            var result = _colorService.AddAColor(color);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult ColorUpdate(Color color)
+        {
+            var result = _colorService.UpdateColor(color);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult ColorDelete(Color color)
+        {
+            var result = _colorService.DeleteColor(color);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Bussiness.Concrete
 {
-    public class CarManager:ICarService
+    public class CarManager : ICarService
     {
         private ICarDal _carDal;
 
@@ -18,62 +18,100 @@ namespace Bussiness.Concrete
         {
             _carDal = carDal;
         }
+
+        // tamamdır
         public IResult AddACar(Car car)
         {
-
-            if (car.CarName.Length < 2)
+            if (car != null)
             {
-              return  new ErrorResult(Messages.CarNotAdded);
-            }
-            else if (car.DailyPrice <= 0)
-            {
+                if (car.CarName == null || car.CarName.Length <= 2)
+                {
+                    return new ErrorResult(Messages.CarNotAdded);
+                }
+                else if (car.DailyPrice <= 0)
+                {
+                    // ekleme yapmalısın 
 
-                // ekleme yapmalısın
+                    return new ErrorResult(Messages.CarDailyPrice);
+                }
+                else
+                {
+                    _carDal.Add(car);
 
-                return new ErrorResult(Messages.CarNotAdded);
+                    return new SuccessResult(Messages.CarAdded);
+                }
             }
-            else
-            {
-                _carDal.Add(car);
-         
-                return new SuccessResult(Messages.CarAdded);
-            }
-
+            return new ErrorResult(Messages.CarNotAdded);
         }
 
+        // tamadır
         public IResult UpdateCar(Car car)
         {
-            Car carFind = _carDal.GetByID(car.CarId);
-            if (carFind == null)
+            if (_carDal.Any(x => x.CarId == car.CarId))
             {
 
-                // ekleme yap
+                Car carFind = _carDal.GetByID(car.CarId);
+                if (carFind != null)
+                {
+                    if (car.CarName != null && _carDal.Any(x => x.CarName != car.CarName))
+                    {
+                        carFind.CarName = car.CarName;
+                    }
+                    if (car.BrandId > 0 && _carDal.Any(x => x.BrandId != car.BrandId))
+                    {
+                        carFind.BrandId = car.BrandId;
+                    }
+                    if (car.ColorId > 0 && _carDal.Any(x => x.ColorId != car.ColorId))
+                    {
+                        carFind.ColorId = car.ColorId;
+                    }
+                    if (car.DailyPrice > 0 && _carDal.Any(x => x.DailyPrice != car.DailyPrice))
+                    {
+                        carFind.DailyPrice = car.DailyPrice;
+                    }
+                    if (car.Description != null && _carDal.Any(x => x.Description != car.Description))
+                    {
+                        carFind.Description = car.Description;
+                    }
+                    if (car.ModelYear != null && _carDal.Any(x => x.ModelYear != car.ModelYear))
+                    {
+                        carFind.ModelYear = car.ModelYear;
+                    }
+
+                    _carDal.Update(carFind);
+                    return new SuccessResult(Messages.CarUpdated);
+                }
 
                 return new ErrorResult(Messages.CarNotUpdated);
+
             }
-            else
-            {
-                _carDal.Update(car);
-               return new SuccessResult(Messages.CarAdded);
-            }
-         
+
+            return new ErrorResult(Messages.CarCantFind);
         }
+
+
 
         public IResult DeleteCar(Car car)
         {
-            Car carFind = _carDal.GetByID(car.CarId);
-            if (carFind == null)
+            if (_carDal.Any(x => x.CarId == car.CarId))
             {
+                Car carFind = _carDal.GetByID(car.CarId);
 
-              return  new ErrorResult(Messages.CarNotDeleted);
-            }
-            else
-            {
-                _carDal.Delete(car);
-                return new SuccessResult(Messages.ColorDeleted);
-            }
+                List<CarForDeleteDto> carForDeleteDtos = _carDal.GetCars();
+                foreach (var item in carForDeleteDtos)
+                {
+                    if (item.CarId == carFind.CarId && item.ReturnedDate != null)
+                    {
+                        _carDal.Delete(carFind);
+                        return new SuccessResult(Messages.CarDeleted);
 
-           
+                    }
+                }
+               
+                    return new ErrorResult(Messages.CarNotDeleted);
+          
+            }
+            return new ErrorResult(Messages.CarNotDeleted);
         }
 
 
@@ -83,32 +121,59 @@ namespace Bussiness.Concrete
             //{
             //    return new ErrorDataResult<List<Car>>(Messages.MaintanceTime);
             //}
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(),Messages.CarListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
 
         public IDataResult<Car> GetByCarId(int id)
         {
-            return new SuccessDataResult<Car> (_carDal.Get(x=> x.CarId == id),Messages.CarByID);
-        }
-        public IDataResult<List<Car>> GetByBrandId(int id)
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(x => x.BrandId == id),Messages.CarByBrandID);
+            return new SuccessDataResult<Car>(_carDal.Get(x => x.CarId == id), Messages.CarByID);
         }
 
+        // tamamdır
+        public IDataResult<List<Car>> GetByBrandId(int id)
+        {
+            if (id != 0 && _carDal.Any(x => x.BrandId == id))
+            {
+                List<Car> car = _carDal.GetAll(x => x.BrandId == id);
+                if (car.Count != 0)
+                {
+                    return new SuccessDataResult<List<Car>>(car, Messages.CarByBrandID);
+                }
+                return new ErrorDataResult<List<Car>>(Messages.CarNotListed);
+            }
+            return new ErrorDataResult<List<Car>>(Messages.IdNotFound);
+
+
+
+
+        }
+        // tamamdır
         public IDataResult<List<Car>> GetByColorId(int id)
         {
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(x => x.ColorId == id),Messages.CarByColorID);
+            if (id != 0 && _carDal.Any(x => x.ColorId == id))
+            {
+                List<Car> car = _carDal.GetAll(x => x.ColorId == id);
+                if (car.Count != 0)
+                {
+                    return new SuccessDataResult<List<Car>>(car, Messages.CarByColorID);
+                }
+                return new ErrorDataResult<List<Car>>(Messages.CarNotListed);
+            }
+            return new ErrorDataResult<List<Car>>(Messages.IdNotFound);
+
         }
+
+
+
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            if (DateTime.Now.Hour==21)
+            if (DateTime.Now.Hour == 21)
             {
                 return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintanceTime);
             }
-            return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetail(),Messages.CarDetailList);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(), Messages.CarDetailList);
         }
 
-       
     }
 }

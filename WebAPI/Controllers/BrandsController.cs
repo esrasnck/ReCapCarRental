@@ -1,4 +1,5 @@
 ﻿using Bussiness.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,5 +20,60 @@ namespace WebAPI.Controllers
             _brandService = brandService;
         }
 
+        [HttpGet]  // test edilecek
+        public IActionResult GetByBrandId(int id)
+        {
+            var result = _brandService.GetByBrandId(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]  // test edilecek
+        public IActionResult BrandAdd([FromBody] Brand brand)
+        {
+            var result = _brandService.AddBrand(brand);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult BrandUpdated([FromBody] Brand brand)
+        {
+            var result = _brandService.UpdateBrand(brand);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]  // test edilecek
+
+        public IActionResult BrandDeleted([FromBody] Brand brand)
+        {
+            var result = _brandService.DeleteBrand(brand);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet]  // test edilecek
+        public IActionResult BrandList()
+        {
+            var result = _brandService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
     }
 }

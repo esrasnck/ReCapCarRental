@@ -14,6 +14,7 @@ namespace Bussiness.Constants.Messages
         public static string CarNotUpdated = "Araba Güncellenemedi";
         public static string CarDeleted = "Araba Silindi";
         public static string CarNotDeleted = "Araba Silinemedi";
+        public static string CarCantFind = "güncellenecek Araba bulunamadı";
 
         public static string CarListed = "Arabalar Listelendi";
         public static string CarNotListed = "Arabalar Listelenemedi";
@@ -25,10 +26,11 @@ namespace Bussiness.Constants.Messages
         public static string NotCarByBrandID = "Markaya göre Arabalar Listelenemedi";
         public static string CarDetailList = "Araba Detay Listesi";
         public static string NotCarDetailList = "Araba Detay Listesi Getirilemedi";
+        public static string CarDailyPrice = "Günlük ücreti sıfırdan büyük girmelisiniz";
 
         // For Color
         public static string ColorAdded = "Renk Eklendi";
-        public static string ColorNorAdded = "Renk Eklenemedi";
+        public static string ColorNotAdded = "Renk Eklenemedi";
         public static string ColorUpdated = "Renk Güncellendi";
         public static string ColorNotUpdated = "Renk Güncellenemedi";
         public static string ColorDeleted = "Renk Silindi";
@@ -37,6 +39,7 @@ namespace Bussiness.Constants.Messages
         public static string ColorNotListed = "Renkler listelenemedi";
         public static string ColorByID = "Renk Getirildi";
         public static string NotColorByID = "Renk Getirilemedi";
+        public static string ColorAlreadyExist = "Renk zaten var";
 
 
         // For Brand
@@ -51,6 +54,7 @@ namespace Bussiness.Constants.Messages
         public static string BrandNotListed = "Markalar listelenemedi";
         public static string BrandByID = "Marka Getirildi";
         public static string NotBrandByID = "Marka Getirilemedi";
+        public static string BrandAllreadyExist = "Marka zaten ekli";
 
 
         // genel
@@ -86,6 +90,11 @@ namespace Bussiness.Constants.Messages
         public static string CustomerDeleted = "Müşteri silindi";
         public static string CustomerNotUpdated = "Müşteri güncellenemedi";
         public static string CustomerUpdated = "Müşteri güncellendi";
-       
+
+
+        // id'sel
+        public static string IdNotFound = "id hatalı ya da yanlış geldi";
+
+
     }
 }
