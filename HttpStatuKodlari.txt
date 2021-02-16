@@ -1,0 +1,16 @@
+BASARILI :2xx
+200 => Ok. İstek Başarılı
+201=> veri oluşturma başarılı
+
+YONLENDIRME HATALARI: 3xx
+301=> istek kalıcı olarka yönlendirildi
+
+CLIENT HATALARI : 4xx
+400=> Karşılığı olmayan istek
+401=> Yetkisiz talep. istemcinin uygun yetkilendirme sağlamadan korumalı bir kaynak üzerinde çalışmaya çalıştığını gösterir.
+403=> Müsterinin isteği doğru bir biçimde oluşturmasına rağmen, API'ın bunu yerine getirmeyi reddettiğini, kullanıcının kaynak için gerekli izinlere sahip olmadığını belirtir
+404=> Bulunamadı. 404 hata durum kodu, REST API'nin istemcinin URI'sini bir kaynakla eşleyemediğini, ancak gelecekte kullanılabilir olabileceğini belirtir. Müşteri tarafından müteakip taleplere izin verilir.
+
+SERVER HATALARI : 5xx
+500=> Sunucu taraflı/server taraflı hata & id parametresi aynı olan birden çok actiondan da kaynaklı olabilir. & iç hatalar
+502=> hata mesajları genellikle iki sunucu arasındaki veri alışverişinde oluşabilecek kopma, izinsiz erişim, yanlış tip veri döndürme gibi nedenlerden kaynaklanır. 
