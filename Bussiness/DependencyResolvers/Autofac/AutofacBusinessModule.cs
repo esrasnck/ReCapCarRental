@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
+using Autofac.Core.Activators.Reflection;
+using Autofac.Extras.DynamicProxy;
 using Bussiness.Abstract;
 using Bussiness.Concrete;
+using Castle.DynamicProxy;
+using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using Entities.Concrete;
@@ -31,6 +35,16 @@ namespace Bussiness.DependencyResolvers.Autofac
 
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
+
+
+
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                {
+                    Selector = new AspectInterceptorSelector()
+                }).SingleInstance();
+
 
         }
     }

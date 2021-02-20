@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Bussiness.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using FluentValidation;
 
@@ -21,14 +22,13 @@ namespace Bussiness.Concrete
         {
             _carDal = carDal;
         }
+        
 
-      //[Validate]
+        [ValidationAspect(typeof(CarValidator))]
         public IResult AddACar(Car car)
         {
             if (car != null)
             {
-                ValidationTool.Validate(new CarValidator(), car);
-
 
                 if (!_carDal.Any(x=>x.CarName.Contains(car.CarName)))
                 {
