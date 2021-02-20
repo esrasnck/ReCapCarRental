@@ -7,6 +7,9 @@ using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Bussiness.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using FluentValidation;
 
 namespace Bussiness.Concrete
 {
@@ -19,22 +22,15 @@ namespace Bussiness.Concrete
             _carDal = carDal;
         }
 
-      
+      //[Validate]
         public IResult AddACar(Car car)
         {
             if (car != null)
             {
-                if (car.CarName == null || car.CarName.Length <= 2)
-                {
-                    return new ErrorResult(Messages.CarNotAdded);
-                }
-                else if (car.DailyPrice <= 0)
-                {
-                    // ekleme yapmalısın 
+                ValidationTool.Validate(new CarValidator(), car);
 
-                    return new ErrorResult(Messages.CarDailyPrice);
-                }
-                else if (!_carDal.Any(x=>x.CarName.Contains(car.CarName)))
+
+                if (!_carDal.Any(x=>x.CarName.Contains(car.CarName)))
                 {
                     _carDal.Add(car);
 

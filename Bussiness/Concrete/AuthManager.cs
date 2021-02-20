@@ -19,19 +19,19 @@ namespace Bussiness.Concrete
             _userService = userService;
         }
 
-        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
-        {
-            var IsExist = _userService.GetByMail(userForLoginDto.Email);
-            if (IsExist == null) //=> kullanıcı var mı?
-            {
-                return new ErrorDataResult<User>(Messages.UserNotFound); // => şifre doğru mu?
-            }
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, IsExist.PasswordHash, IsExist.PasswordSalt))
-            {
-                return new ErrorDataResult<User>(Messages.PasswordError); // api ya gerçek sonucu vermeliyiz.
-            }
-            return new SuccessDataResult<User>(IsExist, Messages.SuccessfullLogin);
-        }
+        //public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        //{
+        //    var IsExist = _userService.GetByMail(userForLoginDto.Email);
+        //    if (IsExist == null) //=> kullanıcı var mı?
+        //    {
+        //        return new ErrorDataResult<User>(Messages.UserNotFound); // => şifre doğru mu?
+        //    }
+        //    if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, IsExist.PasswordHash, IsExist.PasswordSalt))
+        //    {
+        //        return new ErrorDataResult<User>(Messages.PasswordError); // api ya gerçek sonucu vermeliyiz.
+        //    }
+        //    return new SuccessDataResult<User>(IsExist, Messages.SuccessfullLogin);
+        //}
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {

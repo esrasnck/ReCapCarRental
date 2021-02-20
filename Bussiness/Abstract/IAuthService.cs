@@ -11,7 +11,7 @@ namespace Bussiness.Abstract
     {
 
         IDataResult<User> Register(UserForRegisterDto userForRegisterDto);
-        IDataResult<User> Login(UserForLoginDto userForLoginDto);
+        //IDataResult<User> Login(UserForLoginDto userForLoginDto);
         IResult UserExits(string email);
     }
 }
