@@ -14,6 +14,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
 
+
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
