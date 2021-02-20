@@ -1,4 +1,5 @@
 ﻿using Bussiness.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using Entities.Concrete;
@@ -17,15 +18,40 @@ namespace Bussiness.Concrete
             _userDal = userDal;
 
         }
-        public void Add(User user)
+  
+        public IResult Delete(User user)
         {
-            _userDal.Add(user);
+            throw new NotImplementedException();
         }
 
-        public User GetByMail(string email)
+        public IDataResult<User> GetAll()
         {
-            return _userDal.Get(x => x.Email == email);
+            throw new NotImplementedException();
         }
 
+        public IDataResult<User> GetByCustomerId(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataResult<User> GetByUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult Update(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        IResult IUserService.Add(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataResult<User> IUserService.GetByMail(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
