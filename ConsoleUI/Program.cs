@@ -20,24 +20,27 @@ namespace ConsoleUI
 
             //InputFromConsole(carManager);
             //CarList(carManager);
-            
-            IDataResult<List<CarDetailDto>> result = carManager.GetCarDetails();
 
-            if (result.Success ==true)
-            {
-                foreach (CarDetailDto item in result.Data)
-                {
-                    Console.WriteLine($"Araba Adı : {item.CarName}, Marka Adı :{item.BrandName}, Araba Rengi : {item.ColorName}, Günlük fiyatı :{item.DailyPrice}");
-                }
-                
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
-         
+            // VeriEkleme();
+           
 
-       
+            //IDataResult<List<CarDetailDto>> result = carManager.GetCarDetails();
+
+            //if (result.Success ==true)
+            //{
+            //    foreach (CarDetailDto item in result.Data)
+            //    {
+            //        Console.WriteLine($"Araba Adı : {item.CarName}, Marka Adı :{item.BrandName}, Araba Rengi : {item.ColorName}, Günlük fiyatı :{item.DailyPrice}");
+            //    }
+
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
+
+
+
 
         }
 
@@ -99,6 +102,7 @@ namespace ConsoleUI
                     carManager.AddACar(car);
                 }
             }
+            Console.WriteLine("eklendi");
         }
     }
 }
