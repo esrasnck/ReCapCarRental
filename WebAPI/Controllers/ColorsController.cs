@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult ColorUpdate(Color color)
+        public IActionResult ColorUpdate([FromBody] Color color)
         {
             var result = _colorService.UpdateColor(color);
             if (result.Success)
@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult ColorDelete(Color color)
+        public IActionResult ColorDelete([FromBody] Color color)
         {
             var result = _colorService.DeleteColor(color);
             if (result.Success)
@@ -74,5 +74,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
+
+
     }
 }

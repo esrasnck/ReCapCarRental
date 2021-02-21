@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.Concrete;
 
 namespace WebAPI.Controllers
 {
@@ -17,6 +18,61 @@ namespace WebAPI.Controllers
         public RentalsController(IRentalService rentalService)
         {
             _rentalService = rentalService;
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var result = _rentalService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet]
+        public IActionResult GetById(int id)
+        {
+            var result = _rentalService.GetByID(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult CustomerAdd([FromBody] Rental rental)
+        {
+            var result = _rentalService.AddRentalCar(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult CustomerUpdate([FromBody] Rental rental)
+        {
+            var result = _rentalService.UpdateRentalCar(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost]
+        public IActionResult CustomerDelete([FromBody] Rental rental)
+        {
+            var result = _rentalService.DeleteRentalCar(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
         }
     }
 }

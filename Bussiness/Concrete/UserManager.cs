@@ -5,7 +5,9 @@ using DataAccess.Concrete;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Bussiness.Constants.Messages;
 
 namespace Bussiness.Concrete
 {
@@ -21,37 +23,101 @@ namespace Bussiness.Concrete
   
         public IResult Delete(User user)
         {
-            throw new NotImplementedException();
+            if (_userDal.Any(x=>x.UserId ==user.UserId  || x.Email == user.Email || x.FirstName ==user.FirstName || x.LastName == user.LastName))
+            {
+                User userToDelete = _userDal.Get(x =>
+                    x.UserId == user.UserId || x.Email == user.Email || x.FirstName == user.FirstName ||
+                    x.LastName == user.LastName);
+                if (userToDelete == null)
+                {
+                    return new ErrorResult(Messages.UserCantDeleted);
+                }
+                else
+                {
+                    _userDal.Delete(userToDelete);
+                    return new SuccessResult(Messages.UserDeleted);
+                }
+
+                
+            }
+            return new ErrorResult(Messages.UserNotFound);
         }
 
-        public IDataResult<User> GetAll()
+        public IDataResult<List<User>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UserListed);
         }
 
         public IDataResult<User> GetByCustomerId(int customerId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<User>(_userDal.Get(x => x.UserId == customerId), Messages.UserByCustomerId);
         }
 
         public IDataResult<User> GetByUserId(int userId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<User>(_userDal.GetByID(userId), Messages.GetByUserId);
         }
 
         public IResult Update(User user)
         {
-            throw new NotImplementedException();
+            if (!_userDal.Any(x=> x.UserId == user.UserId))
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            else
+            {
+                User userToUpdate = _userDal.Get(x => x.UserId == user.UserId);
+                if (userToUpdate != null)
+                {
+                    if (user.FirstName != null)
+                    {
+                        userToUpdate.FirstName = user.FirstName.ToUpper();
+                    }
+
+                    if (user.LastName!=null)
+                    {
+                        userToUpdate.LastName = user.LastName.ToUpper();
+                    }
+
+                    if (user.Email !=null)
+                    {
+                        userToUpdate.Email = user.Email.ToLower();
+                    }
+
+                    if (user.Password !=null)
+                    {
+                        userToUpdate.Password = user.Password;
+                    }
+
+                    if (user.Status)
+                    {
+                        userToUpdate.Status = user.Status;
+                    }
+                    _userDal.Update(userToUpdate);
+                    return new SuccessResult(Messages.UserUpdated);
+                }
+                else
+                {
+                    return new ErrorResult(Messages.UserCantUpdated);
+                }
+            }
+        }
+         
+        public IResult AddUser(User user)
+        {
+            if (user !=null)
+            {
+                   _userDal.Add(user);
+            return new SuccessResult(Messages.UserAdded);
+            }
+
+            return new ErrorResult(Messages.UserCantAdded);
+
         }
 
-        IResult IUserService.Add(User user)
+        public IDataResult<User> GetByMail(string email)
         {
-            throw new NotImplementedException();
-        }
-
-        IDataResult<User> IUserService.GetByMail(string email)
-        {
-            throw new NotImplementedException();
+            return new SuccessDataResult<User>(_userDal.Get(x => x.Email == email.ToLower()));
         }
     }
 }

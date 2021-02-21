@@ -22,7 +22,7 @@ namespace ConsoleUI
             //InputFromConsole(carManager);
             //CarList(carManager);
 
-            // VeriEkleme();
+         // VeriEkleme();
            
 
             //IDataResult<List<CarDetailDto>> result = carManager.GetCarDetails();

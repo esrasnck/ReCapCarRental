@@ -6,6 +6,17 @@ namespace Bussiness.Constants.Messages
 {
     public static class Messages
     {
+        public static string UserCantDeleted="Kullanıcı silinemedi";
+        public static string UserDeleted = "Kullanıcı silindi";
+        public static string UserListed = "Kullanıcılar listelendi";
+        public static string UserByCustomerId = "Müşteriye göre kullanıcı getirildi";
+        public static string GetByUserId = "Kullanıcı getirildi";
+        public static string UserAdded = "Kullanıcı eklendi";
+        public static string UserUpdated = "Kullanıcı Güncellendi";
+        public static string UserCantUpdated = "Kullanıcı Güncellenemedi";
+        public static string UserCantAdded = "Kullanıcı Eklenemedi";
+
+
         // For Car
 
         public static string CarAdded = "Araba Eklendi";
@@ -90,6 +101,7 @@ namespace Bussiness.Constants.Messages
         public static string CustomerDeleted = "Müşteri silindi";
         public static string CustomerNotUpdated = "Müşteri güncellenemedi";
         public static string CustomerUpdated = "Müşteri güncellendi";
+        public static string CustomerNotAdded = "Müşteri eklenemedi";
 
 
         // id'sel

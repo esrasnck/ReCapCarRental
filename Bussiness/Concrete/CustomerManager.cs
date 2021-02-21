@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Bussiness.Concrete
 {
-    public class CustomerManager:ICustomerService
+    public class CustomerManager : ICustomerService
     {
         private ICustomerDal _customerDal;
 
@@ -30,35 +30,66 @@ namespace Bussiness.Concrete
         }
         public IResult AddACustomer(Customer customer)
         {
+            if (!_customerDal.Any(x => x.UserId == customer.UserId))
+            {
+                return new ErrorResult(Messages.CustomerNotAdded);
+            }
             _customerDal.Add(customer);
             return new SuccessResult(Messages.CustomerAdded);
         }
 
         public IResult DeleteCustomer(Customer customer)
         {
-            Customer customerFind = _customerDal.GetByID(customer.CustomerId);
-            if (customerFind == null)
+            if (_customerDal.Any(x => x.CustomerId == customer.CustomerId || x.UserId == customer.UserId || x.CompanyName == customer.CompanyName))
             {
-                return new ErrorResult(Messages.CustomerNotDeleted);
+
+                Customer customerFind = _customerDal.GetByID(customer.CustomerId);
+                if (customerFind == null)
+                {
+                    return new ErrorResult(Messages.CustomerNotDeleted);
+                }
+                else
+                {
+                    _customerDal.Delete(customerFind);
+                    return new SuccessResult(Messages.CustomerDeleted);
+                }
             }
-            else
-            {
-                _customerDal.Delete(customer);
-                return new SuccessResult(Messages.CustomerDeleted);
-            }
+            return new ErrorResult(Messages.CustomerNotDeleted);
         }
 
         public IResult UpdateCustomer(Customer customer)
         {
-            Customer customerFind = _customerDal.GetByID(customer.CustomerId);
-            if (customerFind == null)
+
+            if (!_customerDal.Any(x => x.CustomerId == customer.CustomerId))
             {
                 return new ErrorResult(Messages.CustomerNotUpdated);
             }
             else
             {
-                _customerDal.Update(customer);
-                return new SuccessResult(Messages.CustomerUpdated);
+                Customer customerFind = _customerDal.Get(x => x.CustomerId == customer.CustomerId);
+
+                if (customerFind != null)
+                {
+                    if (customer.CompanyName != null)
+                    {
+                        customerFind.CompanyName = customer.CompanyName;
+
+                    }
+                    if (customer.UserId != null && _customerDal.Any(x => x.UserId == customer.UserId))
+                    {
+                        customerFind.UserId = customer.UserId;
+                    }
+                    _customerDal.Update(customerFind);
+                    return new SuccessResult(Messages.CustomerUpdated);
+
+                }
+                else
+                {
+
+                    return new ErrorResult(Messages.CustomerNotUpdated);
+
+                }
+
             }
         }
 
