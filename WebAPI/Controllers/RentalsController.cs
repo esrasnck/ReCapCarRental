@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult RentalAdd([FromBody] RentalAddDto rental)
+        public IActionResult RentalAdd([FromBody] RentalAddDto rental)  // todo:bu kısım olmadı. tekrar dön bak !!!
         {
             var result = _rentalService.AddRentalCar(rental);
             if (result.Success)

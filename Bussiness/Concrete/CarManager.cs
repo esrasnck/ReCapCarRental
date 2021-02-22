@@ -107,9 +107,8 @@ namespace Bussiness.Concrete
 
                     }
                 }
-               
-                    return new ErrorResult(Messages.CarNotDeleted);
-          
+                 return new ErrorResult(Messages.CarNotDeleted);
+
             }
             return new ErrorResult(Messages.CarNotDeleted);
         }

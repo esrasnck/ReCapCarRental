@@ -41,9 +41,9 @@ namespace DataAccess.Concrete
         {
             using(RentACarContext context= new RentACarContext())
             {
-                IQueryable<RentalAddDto> result = from r in context.Rentals
-                             join c in context.Cars
-                             on r.CarId equals c.CarId
+                IQueryable<RentalAddDto> result = from c in context.Cars
+                             join r in context.Rentals
+                             on c.CarId equals r.CarId
                              join cs in context.Customers
                              on r.CustomerId equals cs.CustomerId
                              select new RentalAddDto

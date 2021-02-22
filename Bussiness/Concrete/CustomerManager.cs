@@ -75,7 +75,7 @@ namespace Bussiness.Concrete
                         customerFind.CompanyName = customer.CompanyName;
 
                     }
-                    if (customer.UserId != null && _customerDal.Any(x => x.UserId == customer.UserId))
+                    if (customer.UserId>0 && _customerDal.Any(x => x.UserId == customer.UserId))
                     {
                         customerFind.UserId = customer.UserId;
                     }

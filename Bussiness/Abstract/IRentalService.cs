@@ -16,8 +16,6 @@ namespace Bussiness.Abstract
         IResult UpdateRentalCar(Rental rental);
          //IDataResult<List<RentalDetailDto>> GetRentalDetailsDto(int carId);
 
-        // bakmak gerek
-        //IResult CheckReturnDate(int carId);
-        //IResult UpdateReturnDate(int carId);
+      
     }
 }

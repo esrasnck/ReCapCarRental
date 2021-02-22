@@ -10,7 +10,7 @@ using Entities.Dtos;
 
 namespace Bussiness.Concrete
 {
-    public class RentalManager:IRentalService
+    public class RentalManager : IRentalService
     {
         private IRentalDal _rentalDal;
 
@@ -28,50 +28,92 @@ namespace Bussiness.Concrete
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.RentalId == id), Messages.RentalById);
         }
-        public IResult AddRentalCar(RentalAddDto rental) // buraya da
+
+        public IResult AddRentalCar(RentalAddDto rental) // todo: algoritmada fena patladım. olmadı bu. sonra tekrar bakmalı.!!!
         {
-            foreach ( RentalAddDto  item in _rentalDal.RentalAdd())
+            if (!_rentalDal.Any(x => x.RentalId == rental.RentalId))
             {
-                if (item.CarId == rental.CarId && item.ReturnDate !=null)
+
+                var ax = _rentalDal.RentalAdd();
+                foreach (RentalAddDto item in ax)
                 {
-                    Rental rent = new Rental();
-                    rent.CarId = rental.CarId;
-                    rent.CustomerId = rental.CustomerId;
-                    _rentalDal.Add(rent);
-                    return new SuccessResult(Messages.RentalAdded);
+                    if (item.CarId == rental.CarId)
+                    {
+                        Rental rent = new Rental();
+                        rent.CarId = rental.CarId;
+                        rent.CustomerId = rental.CustomerId;
+                        if (!rent.ReturnDate.HasValue)
+                        {
+
+                            _rentalDal.Add(rent);
+                            return new SuccessResult(Messages.RentalAdded);
+                        }
+
+                    }
+
                 }
+
                 return new ErrorResult(Messages.RentalNotAdded);
+
             }
             return new ErrorResult(Messages.RentalNotAdded);
-   
         }
 
-        public IResult DeleteRentalCar(Rental rental) // buraya daha beter dalacaz
+        public IResult DeleteRentalCar(Rental rental) 
         {
-            Rental rentalFind = _rentalDal.GetByID(rental.RentalId);
-            if (rentalFind == null)
+
+            if (_rentalDal.Any(x => x.RentalId == rental.RentalId))
             {
+
+                Rental rentalFind = _rentalDal.GetByID(rental.RentalId);
+                if (rentalFind != null)
+                { 
+                    if (rentalFind.ReturnDate == null)
+                    {
+                        return new ErrorResult(Messages.RentalNotDeleted);
+                    }
+                    else
+                    {
+                        _rentalDal.Delete(rental);
+                        return new SuccessResult(Messages.RentalDeleted);
+                    }
+                }
                 return new ErrorResult(Messages.RentalNotDeleted);
             }
-            else
-            {
-                _rentalDal.Delete(rental);
-                return new SuccessResult(Messages.RentalDeleted);
-            }
+            return new ErrorResult(Messages.RentalNotDeleted);
         }
 
         public IResult UpdateRentalCar(Rental rental)
         {
-            Rental rentalFind = _rentalDal.GetByID(rental.RentalId);
-            if (rentalFind == null)
+            if (_rentalDal.Any(x => x.RentalId == rental.RentalId))
             {
-                return new ErrorResult(Messages.RentalNotUpdated);
+
+                Rental rentalToUpdate = _rentalDal.GetByID(rental.RentalId);
+                if (rentalToUpdate == null)
+                {
+                    return new ErrorResult(Messages.RentalNotUpdated);
+                }
+                else
+                {
+                    if (rental.CarId >0)
+                    {
+                        rentalToUpdate.CarId = rental.CarId;
+                    }
+
+                    if (rental.CustomerId >0)
+                    {
+                        rentalToUpdate.CustomerId = rental.CustomerId;
+                    }
+
+                    if (rental.ReturnDate != null)
+                    {
+                        rentalToUpdate.ReturnDate = rental.ReturnDate;
+                    }
+                    _rentalDal.Update(rentalToUpdate);
+                    return new SuccessResult(Messages.RentalUpdated);
+                }
             }
-            else
-            {
-                _rentalDal.Update(rental);
-                return new SuccessResult(Messages.RentalUpdated);
-            }
+            return new ErrorResult(Messages.RentalNotUpdated);
         }
     }
 }
