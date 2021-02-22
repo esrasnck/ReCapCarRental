@@ -91,6 +91,7 @@ namespace Bussiness.Constants.Messages
         public static string RentalDeleted = "Kiralık araç silindi";
         public static string RentalNotUpdated = "Kiralık araç Güncellenemedi";
         public static string RentalUpdated = "Kiralık araç Güncellendi";
+        public static string CarAlreadyRented = "Araba hala kiralık";
 
         // customer
 

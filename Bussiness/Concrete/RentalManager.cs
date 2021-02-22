@@ -29,35 +29,6 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.RentalId == id), Messages.RentalById);
         }
 
-        public IResult AddRentalCar(RentalAddDto rental) // todo: algoritmada fena patladım. olmadı bu. sonra tekrar bakmalı.!!!
-        {
-            if (!_rentalDal.Any(x => x.RentalId == rental.RentalId))
-            {
-
-                var ax = _rentalDal.RentalAdd();
-                foreach (RentalAddDto item in ax)
-                {
-                    if (item.CarId == rental.CarId)
-                    {
-                        Rental rent = new Rental();
-                        rent.CarId = rental.CarId;
-                        rent.CustomerId = rental.CustomerId;
-                        if (!rent.ReturnDate.HasValue)
-                        {
-
-                            _rentalDal.Add(rent);
-                            return new SuccessResult(Messages.RentalAdded);
-                        }
-
-                    }
-
-                }
-
-                return new ErrorResult(Messages.RentalNotAdded);
-
-            }
-            return new ErrorResult(Messages.RentalNotAdded);
-        }
 
         public IResult DeleteRentalCar(Rental rental) 
         {
@@ -114,6 +85,25 @@ namespace Bussiness.Concrete
                 }
             }
             return new ErrorResult(Messages.RentalNotUpdated);
+        }
+
+        public IResult AddRentalCar(Rental rental)
+        {
+
+            if (_rentalDal.Any(x=>x.RentalId == rental.RentalId))
+            {
+                if (_rentalDal.GetByID(rental.RentalId).ReturnDate.HasValue)
+                {
+                    _rentalDal.Add(rental);
+                }
+
+                return new ErrorResult(Messages.CarAlreadyRented);
+            }
+            else
+            {
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.RentalAdded);
+            }
         }
     }
 }

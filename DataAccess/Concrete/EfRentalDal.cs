@@ -37,25 +37,8 @@ namespace DataAccess.Concrete
             }
         }
 
-        public List<RentalAddDto> RentalAdd()
-        {
-            using(RentACarContext context= new RentACarContext())
-            {
-                IQueryable<RentalAddDto> result = from c in context.Cars
-                             join r in context.Rentals
-                             on c.CarId equals r.CarId
-                             join cs in context.Customers
-                             on r.CustomerId equals cs.CustomerId
-                             select new RentalAddDto
-                             {
-                                 CarId = c.CarId,
-                                 RentalId = r.RentalId,
-                                 CustomerId = cs.CustomerId,
-                                 ReturnDate = r.ReturnDate
-                             };
-                return result.ToList();
-            }
-        }
+       
+     
     }
 
   
