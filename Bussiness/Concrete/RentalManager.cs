@@ -6,6 +6,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Entities.Dtos;
 
 namespace Bussiness.Concrete
 {
@@ -27,17 +28,22 @@ namespace Bussiness.Concrete
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.RentalId == id), Messages.RentalById);
         }
-        public IResult AddRentalCar(Rental rental) // buraya da
+        public IResult AddRentalCar(RentalAddDto rental) // buraya da
         {
-            Rental carForRent = _rentalDal.GetByID(rental.RentalId);
-            if (carForRent.ReturnDate == null && carForRent.RentDate!=null)
+            foreach ( RentalAddDto  item in _rentalDal.RentalAdd())
             {
+                if (item.CarId == rental.CarId && item.ReturnDate !=null)
+                {
+                    Rental rent = new Rental();
+                    rent.CarId = rental.CarId;
+                    rent.CustomerId = rental.CustomerId;
+                    _rentalDal.Add(rent);
+                    return new SuccessResult(Messages.RentalAdded);
+                }
                 return new ErrorResult(Messages.RentalNotAdded);
             }
-            _rentalDal.Add(rental);
-            return new SuccessResult(Messages.RentalAdded);
-
-
+            return new ErrorResult(Messages.RentalNotAdded);
+   
         }
 
         public IResult DeleteRentalCar(Rental rental) // buraya daha beter dalacaz

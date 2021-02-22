@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -43,7 +44,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CustomerAdd([FromBody] Rental rental)
+        public IActionResult RentalAdd([FromBody] RentalAddDto rental)
         {
             var result = _rentalService.AddRentalCar(rental);
             if (result.Success)
@@ -54,7 +55,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CustomerUpdate([FromBody] Rental rental)
+        public IActionResult RentalUpdate([FromBody] Rental rental)
         {
             var result = _rentalService.UpdateRentalCar(rental);
             if (result.Success)
@@ -65,7 +66,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CustomerDelete([FromBody] Rental rental)
+        public IActionResult RentalDelete([FromBody] Rental rental)
         {
             var result = _rentalService.DeleteRentalCar(rental);
             if (result.Success)
