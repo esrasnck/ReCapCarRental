@@ -92,9 +92,10 @@ namespace Bussiness.Concrete
 
             if (_rentalDal.Any(x=>x.CarId == rental.CarId))
             {
-                if (_rentalDal.GetByID(rental.CarId).ReturnDate.HasValue)
+                Rental rent = _rentalDal.GetByID(rental.CarId);
+                if (rent.ReturnDate.HasValue || rent.ReturnDate>DateTime.Now)
                 {
-                    _rentalDal.Add(rental);
+                    _rentalDal.Add(rent);
                     return new SuccessResult(Messages.RentalAdded);
                 }
 
