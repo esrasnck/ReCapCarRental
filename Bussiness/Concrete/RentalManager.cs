@@ -90,11 +90,12 @@ namespace Bussiness.Concrete
         public IResult AddRentalCar(Rental rental)
         {
 
-            if (_rentalDal.Any(x=>x.RentalId == rental.RentalId))
+            if (_rentalDal.Any(x=>x.CarId == rental.CarId))
             {
-                if (_rentalDal.GetByID(rental.RentalId).ReturnDate.HasValue)
+                if (_rentalDal.GetByID(rental.CarId).ReturnDate.HasValue)
                 {
                     _rentalDal.Add(rental);
+                    return new SuccessResult(Messages.RentalAdded);
                 }
 
                 return new ErrorResult(Messages.CarAlreadyRented);
