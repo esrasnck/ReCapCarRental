@@ -109,5 +109,14 @@ namespace Bussiness.Constants.Messages
         public static string IdNotFound = "id hatalı ya da yanlış geldi";
 
 
+        // car İmage
+        public static string ImageListed = "Resimler Listelendi";
+        public static string ListedByCarId = "Aracın resimleri getirildi.";
+        public static string CarImage = "Araç resmi getirildi.";
+        public static string ImageAdded = "Araç resmi eklendi.";
+        public static string ImageUpdated = "Araç resmi güncellendi.";
+        public static string ImageDeleted = "Araç resmi silindi..";
+
+        public static string OverCountCarImage= "bir aracın en fazla 5 resmi olabilir";
     }
 }

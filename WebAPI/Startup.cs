@@ -39,10 +39,16 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseStaticFiles(); 
 
             app.UseAuthorization();
 
