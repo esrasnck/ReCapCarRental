@@ -11,7 +11,7 @@ namespace Bussiness.Abstract
     {
         IResult ImageAdd(IFormFile file, CarImage carImage);
 
-        IResult ImageUpdate(CarImage carImage);
+        IResult ImageUpdate(IFormFile file, CarImage carImage);
 
         IResult ImageDelete(CarImage carImage);
 

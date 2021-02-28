@@ -58,12 +58,15 @@ namespace Bussiness.Concrete
 
         public IResult ImageDelete(CarImage carImage)
         {
+            FileUploadHelper.Delete(carImage.ImagePath);
             _carImageDal.Delete(carImage);
             return new SuccessResult(Messages.ImageDeleted);
         }
 
-        public IResult ImageUpdate(CarImage carImage)
+        public IResult ImageUpdate(IFormFile file, CarImage carImage)
         {
+            carImage.ImagePath = FileUploadHelper.Update(_carImageDal.Get(x => x.CarId == carImage.CarId).ImagePath,file);
+            carImage.Date =DateTime.Now;
             _carImageDal.Update(carImage);
             return new SuccessResult(Messages.ImageUpdated);
         }

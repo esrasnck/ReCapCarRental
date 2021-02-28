@@ -15,12 +15,12 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CarImagesController : ControllerBase
     {
-        //private IWebHostEnvironment _enviroment;
+        
         private ICarImageService _carImageService;
 
-        public CarImagesController(/*IWebHostEnvironment enviroment,*/ ICarImageService carImageService)
+        public CarImagesController(ICarImageService carImageService)
         {
-            //    _enviroment = enviroment;
+           
             _carImageService = carImageService;
         }
 
@@ -73,9 +73,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateImage([FromBody] CarImage carImage)
+        public IActionResult UpdateImage([FromForm] IFormFile file,[FromForm] CarImage carImage)
         {
-            var result = _carImageService.ImageUpdate(carImage);
+           
+            var result = _carImageService.ImageUpdate(file, carImage); // todo:yemeyebilir
             if (result.Success)
             {
                 return Ok(result);
