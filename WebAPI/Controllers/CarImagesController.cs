@@ -97,48 +97,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
 
-            #region eski
-            //List<IResult> results = new List<IResult>();
-            //foreach (IFormFile itemFormFileFile in fromFormFiles)
-            //{
-            //    if (itemFormFileFile.Length>0)
-            //    {
-            //        string imageExtension = Path.GetExtension(itemFormFileFile.FileName);
-            //        string newPicName = string.Format($"{Guid.NewGuid().ToString("D")}{imageExtension}");
-            //        string imageFolder = Path.Combine(_enviroment.WebRootPath, "Images");
-            //        string fullImagePath = Path.Combine(imageFolder, newPicName);
-            //        string webImagePath = string.Format($"/Images/{newPicName}");
-
-            //        if (!Directory.Exists(imageFolder))
-            //        {
-            //            Directory.CreateDirectory(imageFolder);
-            //        }
-
-            //        using (FileStream fileStream =System.IO.File.Create(fullImagePath))
-            //        {
-            //           itemFormFileFile.CopyTo(fileStream);
-            //           fileStream.Flush();
-            //        }
-            //        results.Add(_carImageService.ImageAdd(new CarImage()
-            //        {
-            //            ImagePath = webImagePath,
-            //            CarId = carImage.CarId
-            //        }));
-
-
-            //    }
-            //}
-
-            //IResult check = BusinessRules.Run(results.ToArray());
-            //if (check == null)
-            //{
-            //    return Ok(new SuccessResult("resim yüklendi"));
-            //}
-            //else
-            //{
-            //    return BadRequest(results);
-            //}
-#endregion
+         
         }
  
     }
