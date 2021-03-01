@@ -9,6 +9,7 @@ using Bussiness.Constants.Messages;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace Bussiness.Concrete
 {
@@ -27,7 +28,8 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<CarImage>> GetByCarId(int carId)
         {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(x => x.CarId == carId),
+         
+            return new SuccessDataResult<List<CarImage>>(CheckCarImageExists(carId),
                 Messages.ListedByCarId);
         }
 
@@ -38,6 +40,8 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<CarImage>> GetList()
         {
+
+            
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(),Messages.ImageListed);
         }
 
@@ -77,10 +81,25 @@ namespace Bussiness.Concrete
             List<CarImage> getCarImages = _carImageDal.GetAll(x => x.CarId == carImage.CarId);
             if (getCarImages.Count >= 5)
             {
-                return new ErrorResult("bir aracın en fazla 5 resmi olabilir");
+                return new ErrorResult(Messages.OverCountCarImage);
             }
 
             return new SuccessResult();
+        }
+        
+        private List<CarImage> CheckCarImageExists(int carId)
+        {
+            var result = _carImageDal.GetAll(x => x.CarId ==carId).Any();
+            string path = @"\wwwroot\Images\mslogo.jpg";
+            if (!result)
+            {
+                List<CarImage> carImages = new List<CarImage>()
+                {
+                   new CarImage{CarId = carId,ImagePath =path}
+                };
+                return carImages;
+            }
+            return _carImageDal.GetAll(x => x.CarId == carId);
         }
     }
 }

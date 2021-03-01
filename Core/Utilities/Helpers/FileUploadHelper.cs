@@ -10,7 +10,6 @@ namespace Core.Utilities.Helpers
 {
     public class FileUploadHelper  //todo: burada ya ya fena patlayacaz. ya da çıkacaz :(  Sen bir kal  => burada sıkıntı büyük :(
     {
-       
 
         public static string Add(IFormFile file)
         {
@@ -29,7 +28,7 @@ namespace Core.Utilities.Helpers
             File.Move(sourcePath, result);
             return result;
         }
-        // 
+      
         public static string NewPath(IFormFile file)
         {
             FileInfo file_info = new FileInfo(file.FileName);

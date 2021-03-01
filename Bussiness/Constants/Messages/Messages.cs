@@ -118,5 +118,7 @@ namespace Bussiness.Constants.Messages
         public static string ImageDeleted = "Araç resmi silindi..";
 
         public static string OverCountCarImage= "bir aracın en fazla 5 resmi olabilir";
+        public static string CarImageDefault="Arabaya ait resim bulunamamaktadır.";
+       
     }
 }
