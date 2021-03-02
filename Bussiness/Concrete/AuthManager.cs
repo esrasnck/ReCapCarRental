@@ -38,7 +38,7 @@ namespace Bussiness.Concrete
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound); 
             }
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, IsExist.PasswordHash, IsExist.PasswordSalt))
+            if (HashingHelper.VerifyPasswordHash(userForLoginDto.Password, IsExist.PasswordHash, IsExist.PasswordSalt)==false)
             {
                 return new ErrorDataResult<User>(Messages.PasswordError); 
             }
@@ -64,7 +64,7 @@ namespace Bussiness.Concrete
 
         public IResult UserExits(string email)
         {
-            if (_userService.GetByMail(email) != null)
+            if (_userService.GetByMail(email).Data != null)
             {
                 return new ErrorResult(Messages.UserExist);
             }
