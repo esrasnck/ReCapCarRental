@@ -1,7 +1,9 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
+using Core.Utilities.Security.JWT;
 using Entities.Concrete;
 using Entities.Dtos;
 using System;
@@ -13,25 +15,35 @@ namespace Bussiness.Concrete
     public class AuthManager : IAuthService
     {
         private IUserService _userService;
+        ITokenHelper _tokenHelper;
 
-        public AuthManager(IUserService userService)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
+            _tokenHelper = tokenHelper;
         }
 
-        //public IDataResult<User> Login(UserForLoginDto userForLoginDto)
-        //{
-        //    var IsExist = _userService.GetByMail(userForLoginDto.Email);
-        //    if (IsExist == null) //=> kullanıcı var mı?
-        //    {
-        //        return new ErrorDataResult<User>(Messages.UserNotFound); // => şifre doğru mu?
-        //    }
-        //    if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, IsExist.PasswordHash, IsExist.PasswordSalt))
-        //    {
-        //        return new ErrorDataResult<User>(Messages.PasswordError); // api ya gerçek sonucu vermeliyiz.
-        //    }
-        //    return new SuccessDataResult<User>(IsExist, Messages.SuccessfullLogin);
-        //}
+        public IDataResult<AccessToken> CreateAccessToken(User user)
+        {
+            var claims = _userService.GetClaims(user);
+            var accessToken = _tokenHelper.CreateToken(user, claims.Data);
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+        }
+
+
+        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        {
+            var IsExist = _userService.GetByMail(userForLoginDto.Email).Data;
+            if (IsExist == null) 
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound); 
+            }
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, IsExist.PasswordHash, IsExist.PasswordSalt))
+            {
+                return new ErrorDataResult<User>(Messages.PasswordError); 
+            }
+            return new SuccessDataResult<User>(IsExist, Messages.SuccessfullLogin);
+        }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
@@ -52,7 +64,7 @@ namespace Bussiness.Concrete
 
         public IResult UserExits(string email)
         {
-            if (_userService.GetByMail(email)!=null)
+            if (_userService.GetByMail(email) != null)
             {
                 return new ErrorResult(Messages.UserExist);
             }

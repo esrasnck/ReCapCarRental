@@ -44,7 +44,7 @@ namespace Bussiness.Concrete
             
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(),Messages.ImageListed);
         }
-
+ 
         public IResult ImageAdd(IFormFile file,CarImage carImage)
         {
             IResult result = BusinessRules.Run(CheckImageCount(carImage));

@@ -25,7 +25,7 @@ namespace Core.Utilities.Helpers
             }
 
             var result = NewPath(file);
-            File.Move(sourcePath, result);
+            File.Move(sourcePath, result); // todo : kemal beye sor
             return result;
         }
       
@@ -38,6 +38,9 @@ namespace Core.Utilities.Helpers
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
             var new_path = Guid.NewGuid().ToString("N") + "_" + file_extension;
+            
+            // todo: file_extension'ı burada halledebilirim gibi. bu kalsın burada
+
             string result = $@"{path}\{new_path}";
             return result;
         }

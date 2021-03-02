@@ -2,12 +2,12 @@
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
-using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Bussiness.Constants.Messages;
+using Core.Entities.Concrete;
 
 namespace Bussiness.Concrete
 {
@@ -84,11 +84,6 @@ namespace Bussiness.Concrete
                         userToUpdate.Email = user.Email.ToLower();
                     }
 
-                    if (user.Password !=null)
-                    {
-                        userToUpdate.Password = user.Password;
-                    }
-
                     if (user.Status)
                     {
                         userToUpdate.Status = user.Status;
@@ -117,7 +112,14 @@ namespace Bussiness.Concrete
 
         public IDataResult<User> GetByMail(string email)
         {
-            return new SuccessDataResult<User>(_userDal.Get(x => x.Email == email.ToLower()));
+            return new SuccessDataResult<User>(_userDal.Get(x => x.Email == email));
         }
+
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
+        }
+
+  
     }
 }

@@ -119,6 +119,11 @@ namespace Bussiness.Constants.Messages
 
         public static string OverCountCarImage= "bir aracın en fazla 5 resmi olabilir";
         public static string CarImageDefault="Arabaya ait resim bulunamamaktadır.";
-       
+
+
+        // authorization
+        public static string AuthorizationDenied = "Yetkiniz yok";
+        public static string AccessTokenCreated = "Token üretildi";
+
     }
 }
