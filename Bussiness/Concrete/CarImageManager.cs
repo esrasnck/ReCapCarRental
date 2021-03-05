@@ -10,6 +10,7 @@ using Core.Utilities.Business;
 using Core.Utilities.Helpers;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using Core.Aspects.Autofac.Caching;
 
 namespace Bussiness.Concrete
 {
@@ -44,7 +45,8 @@ namespace Bussiness.Concrete
             
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(),Messages.ImageListed);
         }
- 
+
+       // [CacheRemoveAspect("ICarImageService.Get")]
         public IResult ImageAdd(IFormFile file,CarImage carImage)
         {
             IResult result = BusinessRules.Run(CheckImageCount(carImage));
@@ -58,8 +60,8 @@ namespace Bussiness.Concrete
             return new SuccessResult(Messages.ImageAdded);
         }
 
-     
 
+      //  [CacheRemoveAspect("ICarImageService.Get")]
         public IResult ImageDelete(CarImage carImage)
         {
             FileUploadHelper.Delete(carImage.ImagePath);
@@ -67,6 +69,7 @@ namespace Bussiness.Concrete
             return new SuccessResult(Messages.ImageDeleted);
         }
 
+      //  [CacheRemoveAspect("ICarImageService.Get")]
         public IResult ImageUpdate(IFormFile file, CarImage carImage)
         {
             carImage.ImagePath = FileUploadHelper.Update(_carImageDal.Get(x => x.CarId == carImage.CarId).ImagePath,file);

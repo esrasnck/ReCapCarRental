@@ -1,5 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -31,6 +32,8 @@ namespace Bussiness.Concrete
             return new ErrorDataResult<Brand>(Messages.NotBrandByID);
 
         }
+
+     //   [CacheRemoveAspect("IBrandService.Get")]
         public IResult AddBrand(Brand brand)
         {
             if (brand != null)
@@ -46,6 +49,8 @@ namespace Bussiness.Concrete
             return new ErrorResult(Messages.BrandNotAdded);
 
         }
+
+      //  [CacheRemoveAspect("IBrandService.Get")]
         public IResult UpdateBrand(Brand brand)// azcık kal sen burada
         {
             if (brand != null)
@@ -96,6 +101,8 @@ namespace Bussiness.Concrete
             }
             return new ErrorResult(Messages.BrandNotUpdated);
         }
+
+       // [CacheRemoveAspect("IBrandService.Get")]
         public IResult DeleteBrand(Brand brand) 
         {
             if (brand != null)

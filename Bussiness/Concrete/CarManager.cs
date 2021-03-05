@@ -12,6 +12,8 @@ using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using FluentValidation;
 using Bussiness.Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
 
 namespace Bussiness.Concrete
 {
@@ -27,6 +29,7 @@ namespace Bussiness.Concrete
         [SecuredOperation("admin")]
 
         [ValidationAspect(typeof(CarValidator))]
+       // [CacheRemoveAspect("ICarService.Get")]
         public IResult AddACar(Car car)
         {
             if (car != null)
@@ -46,7 +49,7 @@ namespace Bussiness.Concrete
             return new ErrorResult(Messages.CarNotAdded);
         }
 
-      
+      //  [CacheRemoveAspect("ICarService.Get")]
         public IResult UpdateCar(Car car)
         {
             if (_carDal.Any(x => x.CarId == car.CarId))
@@ -92,7 +95,7 @@ namespace Bussiness.Concrete
         }
 
 
-
+       // [CacheRemoveAspect("ICarService.Get")]
         public IResult DeleteCar(Car car)
         {
             if (_carDal.Any(x => x.CarId == car.CarId))
@@ -115,16 +118,16 @@ namespace Bussiness.Concrete
             return new ErrorResult(Messages.CarNotDeleted);
         }
 
+      //  [SecuredOperation("admin")]
 
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetAll()
         {
-            //if (DateTime.Now.Hour ==22)
-            //{
-            //    return new ErrorDataResult<List<Car>>(Messages.MaintanceTime);
-            //}
+        
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
-
+        [CacheAspect]
         public IDataResult<Car> GetByCarId(int id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(x => x.CarId == id), Messages.CarByID);

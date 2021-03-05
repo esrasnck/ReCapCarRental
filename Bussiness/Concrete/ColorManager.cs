@@ -1,5 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -32,6 +33,8 @@ namespace Bussiness.Concrete
             return new ErrorDataResult<Color>(Messages.NotColorByID);
 
         }
+
+       // [CacheRemoveAspect("IColorService.Get")]
         public IResult AddAColor(Color color)
         {
             if (color != null)
@@ -46,7 +49,7 @@ namespace Bussiness.Concrete
             return new ErrorResult(Messages.ColorNotAdded);
 
         }
-
+      //  [CacheRemoveAspect("IColorService.Get")]
         public IResult DeleteColor(Color color)
         {
             if (color != null)
@@ -70,6 +73,7 @@ namespace Bussiness.Concrete
             return new ErrorResult(Messages.ColorNotDeleted);
         }
 
+       // [CacheRemoveAspect("IColorService.Get")]
         public IResult UpdateColor(Color color)
         {
             if (color != null)

@@ -1,5 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -28,6 +29,8 @@ namespace Bussiness.Concrete
         {
             return new SuccessDataResult<Customer>(_customerDal.Get(x => x.CustomerId == id), Messages.CustomerById);
         }
+
+      //  [CacheRemoveAspect("ICustomerService.Get")]
         public IResult AddACustomer(Customer customer)
         {
             if (!_customerDal.Any(x => x.UserId == customer.UserId))
@@ -38,6 +41,8 @@ namespace Bussiness.Concrete
             return new SuccessResult(Messages.CustomerAdded);
         }
 
+
+      //  [CacheRemoveAspect("ICustomerService.Get")]
         public IResult DeleteCustomer(Customer customer)
         {
             if (_customerDal.Any(x => x.CustomerId == customer.CustomerId || x.UserId == customer.UserId || x.CompanyName == customer.CompanyName))
@@ -57,6 +62,8 @@ namespace Bussiness.Concrete
             return new ErrorResult(Messages.CustomerNotDeleted);
         }
 
+
+      //  [CacheRemoveAspect("ICustomerService.Get")]
         public IResult UpdateCustomer(Customer customer)
         {
 

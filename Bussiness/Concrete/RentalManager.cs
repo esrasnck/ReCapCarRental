@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Entities.Dtos;
+using Core.Aspects.Autofac.Caching;
 
 namespace Bussiness.Concrete
 {
@@ -30,6 +31,7 @@ namespace Bussiness.Concrete
         }
 
 
+       // [CacheRemoveAspect("IRentalService.Get")]
         public IResult DeleteRentalCar(Rental rental) 
         {
 
@@ -53,7 +55,7 @@ namespace Bussiness.Concrete
             }
             return new ErrorResult(Messages.RentalNotDeleted);
         }
-
+       // [CacheRemoveAspect("IRentalService.Get")]
         public IResult UpdateRentalCar(Rental rental)
         {
             if (_rentalDal.Any(x => x.RentalId == rental.RentalId))
@@ -86,7 +88,7 @@ namespace Bussiness.Concrete
             }
             return new ErrorResult(Messages.RentalNotUpdated);
         }
-
+       // [CacheRemoveAspect("IRentalService.Get")]
         public IResult AddRentalCar(Rental rental)
         {
 

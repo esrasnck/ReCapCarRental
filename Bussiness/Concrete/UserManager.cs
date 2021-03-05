@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Bussiness.Constants.Messages;
 using Core.Entities.Concrete;
+using Core.Aspects.Autofac.Caching;
 
 namespace Bussiness.Concrete
 {
@@ -20,7 +21,8 @@ namespace Bussiness.Concrete
             _userDal = userDal;
 
         }
-  
+
+       //  [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User user)
         {
             if (_userDal.Any(x=>x.UserId ==user.UserId  || x.Email == user.Email || x.FirstName ==user.FirstName || x.LastName == user.LastName))
@@ -58,6 +60,7 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<User>(_userDal.GetByID(userId), Messages.GetByUserId);
         }
 
+      //  [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User user)
         {
             if (!_userDal.Any(x=> x.UserId == user.UserId))
@@ -97,7 +100,7 @@ namespace Bussiness.Concrete
                 }
             }
         }
-         
+       // [CacheRemoveAspect("IUserService.Get")]
         public IResult AddUser(User user)
         {
             if (user !=null)
