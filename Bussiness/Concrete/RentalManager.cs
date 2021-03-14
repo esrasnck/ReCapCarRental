@@ -109,5 +109,10 @@ namespace Bussiness.Concrete
                 return new SuccessResult(Messages.RentalAdded);
             }
         }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsDto()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.RentalDetailListed);
+        }
     }
 }

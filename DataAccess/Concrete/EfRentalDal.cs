@@ -19,6 +19,8 @@ namespace DataAccess.Concrete
                 IQueryable<RentalDetailDto> rentalDetails = from r in filter is null ? context.Rentals:context.Rentals.Where(filter)
                                     join c in context.Cars
                                     on r.CarId equals c.CarId
+                                    join b in context.Brands
+                                    on c.BrandId equals b.BrandId
                                     join cs in context.Customers
                                     on r.CustomerId equals cs.CustomerId
                                     join user in context.Users
@@ -27,6 +29,8 @@ namespace DataAccess.Concrete
                                     {
                                         CarId = c.CarId,
                                         RentalId = r.RentalId,
+                                        BrandId = c.BrandId,
+                                        BrandName = b.BrandName,
                                         CarName = c.CarName,
                                         CompanyName = cs.CompanyName,
                                         UserName = user.FirstName + " " + user.LastName,

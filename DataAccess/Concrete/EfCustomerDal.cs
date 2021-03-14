@@ -24,8 +24,7 @@ namespace DataAccess.Concrete
                                                                     CustomerId = c.CustomerId,
                                                                     CustomerName = u.FirstName + " " + u.LastName,
                                                                     CompanyName = c.CompanyName,
-                                                                    Email = u.Email,
-                                                                    Status = u.Status
+                                                                   
                                                                 };
                 return customerDetails.ToList();
             }

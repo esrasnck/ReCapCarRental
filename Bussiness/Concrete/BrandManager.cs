@@ -38,7 +38,6 @@ namespace Bussiness.Concrete
         {
             if (brand != null)
             {
-
                 if (!_brandDal.Any(x => x.BrandName.Contains(brand.BrandName)))
                 {
                     _brandDal.Add(brand);

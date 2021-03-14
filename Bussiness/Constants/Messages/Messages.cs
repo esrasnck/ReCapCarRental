@@ -125,5 +125,9 @@ namespace Bussiness.Constants.Messages
         public static string AuthorizationDenied = "Yetkiniz yok";
         public static string AccessTokenCreated = "Token üretildi";
 
+        public static string CustomerDetailListed = "Müşteriler listelendi";
+        public static string CustomerNotListed = "Müşteriler Listelenemedi";
+
+        public static string RentalDetailListed = "Kira Detay Listelendi";
     }
 }

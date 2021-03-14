@@ -4,6 +4,7 @@ using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -98,6 +99,12 @@ namespace Bussiness.Concrete
                 }
 
             }
+        }
+
+        public IDataResult<List<CustomerDetailDto>> GetCustomerDetail()
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerList(), Messages.CustomerDetailListed);
+
         }
 
     }

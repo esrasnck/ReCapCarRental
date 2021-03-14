@@ -17,92 +17,89 @@ namespace Bussiness.Concrete
     public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
-        public CarImageManager(ICarImageDal carImageDal)
+        public CarImageManager(ICarImageDal carDal)
         {
-            _carImageDal = carImageDal;
+            _carImageDal = carDal;
         }
 
 
-        // todo: iş kuralları eklenecek !!!!
-
-
-
-        public IDataResult<List<CarImage>> GetByCarId(int carId)
+        public IDataResult<List<CarImage>> GetAll()
         {
-         
-            return new SuccessDataResult<List<CarImage>>(CheckCarImageExists(carId),
-                Messages.ListedByCarId);
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        public IDataResult<CarImage> GetImageById(int carImageId)
+        public IDataResult<List<CarImage>> GetAllByCarId(int carId)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.GetByID(carImageId),Messages.CarImage);
-        }
+            var result = _carImageDal.GetAll(i => i.CarId == carId);
 
-        public IDataResult<List<CarImage>> GetList()
-        {
-
-            
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(),Messages.ImageListed);
-        }
-
-       // [CacheRemoveAspect("ICarImageService.Get")]
-        public IResult ImageAdd(IFormFile file,CarImage carImage)
-        {
-            IResult result = BusinessRules.Run(CheckImageCount(carImage));
-            if (result != null)
+            if (result.Count > 0)
             {
-                return result;
+                return new SuccessDataResult<List<CarImage>>(result);
             }
 
-            carImage.ImagePath = FileUploadHelper.Add(file);
+            List<CarImage> images = new List<CarImage>();
+            images.Add(new CarImage() { CarId = 0, CarImageId = 0, ImagePath = "/images/car-rent.png" });
+
+            return new SuccessDataResult<List<CarImage>>(images);
+        }
+
+        public IDataResult<CarImage> GetById(int id)
+        {
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(i => i.CarImageId == id));
+        }
+
+        public IResult Add(IFormFile image, CarImage carImage)
+        {
+
+            var imageCount = _carImageDal.GetAll(c => c.CarId == carImage.CarId).Count;
+
+            if (imageCount >= 5)
+            {
+                return new ErrorResult("One car must have 5 or less images");
+            }
+
+            var imageResult = FileUploadHelper.Upload(image);
+
+            if (!imageResult.Success)
+            {
+                return new ErrorResult(imageResult.Message);
+            }
+            carImage.ImagePath = imageResult.Message;
             _carImageDal.Add(carImage);
-            return new SuccessResult(Messages.ImageAdded);
+            return new SuccessResult("Car image added");
         }
 
-
-      //  [CacheRemoveAspect("ICarImageService.Get")]
-        public IResult ImageDelete(CarImage carImage)
+        public IResult Delete(CarImage carImage)
         {
-            FileUploadHelper.Delete(carImage.ImagePath);
+            var image = _carImageDal.Get(c => c.CarImageId == carImage.CarImageId);
+            if (image == null)
+            {
+                return new ErrorResult("Image not found");
+            }
+
+            FileUploadHelper.Delete(image.ImagePath);
             _carImageDal.Delete(carImage);
-            return new SuccessResult(Messages.ImageDeleted);
+            return new SuccessResult("Image was deleted successfully");
         }
 
-      //  [CacheRemoveAspect("ICarImageService.Get")]
-        public IResult ImageUpdate(IFormFile file, CarImage carImage)
+        public IResult Update(IFormFile image, CarImage carImage)
         {
-            carImage.ImagePath = FileUploadHelper.Update(_carImageDal.Get(x => x.CarId == carImage.CarId).ImagePath,file);
-            carImage.Date =DateTime.Now;
+            var isImage = _carImageDal.Get(c => c.CarImageId == carImage.CarImageId);
+            if (isImage == null)
+            {
+                return new ErrorResult("Image not found");
+            }
+
+            var updatedFile = FileUploadHelper.Update(image, isImage.ImagePath);
+            if (!updatedFile.Success)
+            {
+                return new ErrorResult(updatedFile.Message);
+            }
+            carImage.ImagePath = updatedFile.Message;
             _carImageDal.Update(carImage);
-            return new SuccessResult(Messages.ImageUpdated);
-        }
+            return new SuccessResult("Car image updated");
 
-        //todo: refactor et !!!
-        private IResult CheckImageCount(CarImage carImage)
-        {
-            List<CarImage> getCarImages = _carImageDal.GetAll(x => x.CarId == carImage.CarId);
-            if (getCarImages.Count >= 5)
-            {
-                return new ErrorResult(Messages.OverCountCarImage);
-            }
-
-            return new SuccessResult();
-        }
-        
-        private List<CarImage> CheckCarImageExists(int carId)
-        {
-            var result = _carImageDal.GetAll(x => x.CarId ==carId).Any();
-            string path = @"\wwwroot\Images\mslogo.jpg";
-            if (!result)
-            {
-                List<CarImage> carImages = new List<CarImage>()
-                {
-                   new CarImage{CarId = carId,ImagePath =path}
-                };
-                return carImages;
-            }
-            return _carImageDal.GetAll(x => x.CarId == carId);
         }
     }
 }
+

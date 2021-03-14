@@ -38,7 +38,8 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-           // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddCors();
+            // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
            
 
@@ -76,6 +77,8 @@ namespace WebAPI
             {
                 app.UseHsts();
             }
+
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 

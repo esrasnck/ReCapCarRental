@@ -25,9 +25,20 @@ namespace WebAPI.Controllers
             var result = _custormerService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        public IActionResult GetCustomerDetail()
+        {
+            var result = _custormerService.GetCustomerDetail();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpGet]
@@ -73,5 +84,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result.Message);
         }
+
+
     }
 }
