@@ -35,14 +35,14 @@ namespace DataAccess.Concrete
         {
             using (RentACarContext context = new RentACarContext())
             {
-                IQueryable<CarDetailDto> carDetails = from c in filter is null ? context.Cars:context.Cars.Where(filter)
+                IQueryable<CarDetailDto> carDetails = from c in filter is null ? context.Cars : context.Cars.Where(filter)
                                                       join b in context.Brands
                                                       on c.BrandId equals b.BrandId
                                                       join cl in context.Colors
                                                       on c.ColorId equals cl.ColorId
                                                       select new CarDetailDto
                                                       {
-                                                          Id = c.CarId,
+                                                          CarId = c.CarId,
                                                           BrandId = b.BrandId,
                                                           ColorId = cl.ColorId,
                                                           CarName = c.CarName,
@@ -50,7 +50,8 @@ namespace DataAccess.Concrete
                                                           ColorName = cl.ColorName,
                                                           ModelYear = c.ModelYear,
                                                           DailyPrice = c.DailyPrice.ToString(),
-                                                          Description = c.Description
+                                                          Description = c.Description,
+                                                          ImagePath = (from im in context.CarImages where im.CarId == c.CarId select im.ImagePath).FirstOrDefault()
                                                       };
 
                 return carDetails.ToList();
