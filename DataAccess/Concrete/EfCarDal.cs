@@ -5,6 +5,7 @@ using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete
@@ -30,11 +31,11 @@ namespace DataAccess.Concrete
             }
         }
 
-        public List<CarDetailDto> GetCarDetail()
+        public List<CarDetailDto> GetCarDetail(Expression<Func<Car, bool>> filter = null)
         {
             using (RentACarContext context = new RentACarContext())
             {
-                IQueryable<CarDetailDto> carDetails = from c in context.Cars
+                IQueryable<CarDetailDto> carDetails = from c in filter is null ? context.Cars:context.Cars.Where(filter)
                                                       join b in context.Brands
                                                       on c.BrandId equals b.BrandId
                                                       join cl in context.Colors

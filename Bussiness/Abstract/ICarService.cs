@@ -24,7 +24,10 @@ namespace Bussiness.Abstract
         // todo : HANGİ TARAF DOĞRU BAK
         IDataResult<List<Car>> GetByColorId(int id);
         IDataResult<List<Car>> GetByBrandId(int id);
-       
+
+        IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId);
+
+        IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId);
         //IDataResult<List<CarDetailDto>> GetCarsByBrandId(int Brandid);
         //IDataResult<List<CarDetailDto>> GetCarsByColorId(int Colorid);
     }
