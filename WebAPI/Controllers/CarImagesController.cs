@@ -11,7 +11,7 @@ using System.IO;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CarImagesController : ControllerBase
     {
@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             _carImageService = carImageService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _carImageService.GetAll();
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("car/{carId}")]
+        [HttpGet]
         public IActionResult GetAllByCarId(int carId)
         {
             var result = _carImageService.GetAllByCarId(carId);
@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public IActionResult GetById(int id)
         {
             var result = _carImageService.GetById(id);
@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public IActionResult Add([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
 
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpPost]
         public IActionResult Delete(CarImage carImage)
         {
             var result = _carImageService.Delete(carImage);
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPost]
         public IActionResult Update([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
             var result = _carImageService.Update(image, carImage);

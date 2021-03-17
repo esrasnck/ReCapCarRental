@@ -51,7 +51,7 @@ namespace DataAccess.Concrete
                                                           ModelYear = c.ModelYear,
                                                           DailyPrice = c.DailyPrice.ToString(),
                                                           Description = c.Description,
-                                                          ImagePath = (from im in context.CarImages where im.CarId == c.CarId select im.ImagePath).FirstOrDefault()
+                                                    
                                                       };
 
                 return carDetails.ToList();
