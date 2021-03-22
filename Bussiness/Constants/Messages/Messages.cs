@@ -129,5 +129,7 @@ namespace Bussiness.Constants.Messages
         public static string CustomerNotListed = "Müşteriler Listelenemedi";
 
         public static string RentalDetailListed = "Kira Detay Listelendi";
+
+        public static string CarByBrandAndCar = "Arabalar İki yönlü Filtrelendi";
     }
 }

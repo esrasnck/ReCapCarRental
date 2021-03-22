@@ -169,7 +169,7 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            if (DateTime.Now.Hour == 21)
+            if (DateTime.Now.Hour == 7)
             {
                 return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintanceTime);
             }
@@ -185,12 +185,18 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(x => x.ColorId == brandId), Messages.CarDetailList);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(x => x.BrandId == brandId), Messages.CarDetailList);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId)
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(x => x.CarId == carId), Messages.CarDetailList);
+        }
+
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorAndByBrand(int colorId, int brandId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(c => c.ColorId == colorId && c.BrandId == brandId),Messages.CarByBrandAndCar);
         }
     }
 }

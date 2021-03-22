@@ -38,7 +38,7 @@ namespace Bussiness.Concrete
             }
 
             List<CarImage> images = new List<CarImage>();
-            images.Add(new CarImage() { CarId = 0, CarImageId = 0, ImagePath = "/images/car-rent.png" });
+            images.Add(new CarImage() { CarId = 0, CarImageId = 0, ImagePath = "/images/mslogo.png" });
 
             return new SuccessDataResult<List<CarImage>>(images);
         }
