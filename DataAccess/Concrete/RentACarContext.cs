@@ -14,6 +14,7 @@ namespace DataAccess.Concrete
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=RentACarDB;Trusted_Connection=true");
         }
 
+        public DbSet<Card> Cards { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
         public DbSet<Color> Colors { get; set; }

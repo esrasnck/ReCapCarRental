@@ -131,5 +131,13 @@ namespace Bussiness.Constants.Messages
         public static string RentalDetailListed = "Kira Detay Listelendi";
 
         public static string CarByBrandAndCar = "Arabalar İki yönlü Filtrelendi";
+
+
+        // card kısmı
+
+        public static string CardAdded = "Card Eklendi";
+        public static string CardDeleted = "Card silindi";
+        public static string CardListed = "Card Listelendi";
+        public static string CardUpdated = "Card Güncellendi";
     }
 }
