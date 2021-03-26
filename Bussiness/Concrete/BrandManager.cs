@@ -75,27 +75,6 @@ namespace Bussiness.Concrete
                             return new ErrorResult(Messages.BrandNotUpdated);
                         }
                     }
-                    #region forFun:)
-                    //else
-                    //{
-                    //    Brand brandFind = _brandDal.FirstOrDefault(x=> x.BrandName == brand.BrandName);
-                    //    if (brandFind == null)
-                    //    {
-                    //        return new ErrorResult(Messages.BrandNotUpdated);
-
-                    //    }
-                    //    else
-                    //    {
-                    //        if (brand.BrandName != null)
-                    //        {
-                    //            brandFind.BrandName = brand.BrandName;
-                    //            _brandDal.Update(brandFind);
-                    //            return new SuccessResult(Messages.BrandUpdated);
-                    //        }
-                    //        return new ErrorResult(Messages.BrandNotUpdated);
-                    //    }
-                    //}
-                    #endregion
                 }
             }
             return new ErrorResult(Messages.BrandNotUpdated);
