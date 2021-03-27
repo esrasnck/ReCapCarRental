@@ -169,6 +169,7 @@ namespace Bussiness.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
+          
             if (DateTime.Now.Hour == 7)
             {
                 return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintanceTime);

@@ -40,7 +40,6 @@ namespace DataAccess.Concrete
                                                       on c.BrandId equals b.BrandId
                                                       join cl in context.Colors
                                                       on c.ColorId equals cl.ColorId
-
                                                       select new CarDetailDto
                                                       {
                                                           CarId = c.CarId,
@@ -52,7 +51,10 @@ namespace DataAccess.Concrete
                                                           ModelYear = c.ModelYear,
                                                           DailyPrice = c.DailyPrice.ToString(),
                                                           Description = c.Description,
-                                                          IsRentable =!context.Rentals.Any(r => r.CarId == c.CarId) || !context.Rentals.Any(r=> r.CarId == c.CarId && (r.ReturnDate == null || (r.ReturnDate.HasValue && r.ReturnDate > DateTime.Now)))};
+                                                          ImagePath = (from m in context.CarImages where m.CarId == c.CarId select m.ImagePath).FirstOrDefault(),
+                                                          IsRentable = !context.Rentals.Any(r => r.CarId == c.CarId) || !context.Rentals.Any(r => r.CarId == c.CarId && (r.ReturnDate == null || (r.ReturnDate.HasValue && r.ReturnDate > DateTime.Now)))
+                                                      };
+                                                          
 
                 return carDetails.ToList();
 

@@ -19,5 +19,6 @@ namespace Entities.Dtos
         public string DailyPrice { get; set; }
         public string Description { get; set; }
         public bool IsRentable { get; set; }
+        public string ImagePath { get; set; }
     }
 }
