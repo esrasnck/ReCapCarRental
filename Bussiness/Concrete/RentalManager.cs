@@ -9,10 +9,12 @@ using System.Text;
 using Entities.Dtos;
 using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Business;
+using Core.Aspects.Autofac.Validation;
+using Bussiness.ValidationRules.FluentValidation;
 
 namespace Bussiness.Concrete
 {
-    public class RentalManager : IRentalService
+    public class RentalManager : IRentalService   // refactoring done
     {
         private IRentalDal _rentalDal;
         private ICarService _carService;
@@ -22,19 +24,21 @@ namespace Bussiness.Concrete
             _rentalDal = rentalDal;
             _carService = carService;
         }
-
+        [CacheAspect(duration:60)]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalListed);
         }
 
+
+        [CacheAspect(duration: 60)]
         public IDataResult<Rental> GetByID(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.RentalId == id), Messages.RentalById);
         }
 
 
-        // [CacheRemoveAspect("IRentalService.Get")]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult DeleteRentalCar(Rental rental)
         {
 
@@ -49,7 +53,9 @@ namespace Bussiness.Concrete
 
         }
 
-        // [CacheRemoveAspect("IRentalService.Get")]
+        [CacheRemoveAspect("IRentalService.Get")]
+
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult UpdateRentalCar(Rental rental)
         {
             var result = BusinessRules.Run(CheckIsRentalExits(rental.RentalId));
@@ -58,27 +64,19 @@ namespace Bussiness.Concrete
                 return new ErrorResult(Messages.RentalNotUpdated);
             }
 
-            Rental rentalToUpdate = _rentalDal.GetByID(rental.RentalId); // todo: buraya bişiler düşüncez
-
-            if (rental.CarId > 0)
+            var result2 = BusinessRules.Run(CheckIfCarIdExist(rental.CarId));
+            if (result2!=null)
             {
-                rentalToUpdate.CarId = rental.CarId;
+                return new ErrorResult(Messages.RentalNotUpdated);
             }
 
-            if (rental.CustomerId > 0)
-            {
-                rentalToUpdate.CustomerId = rental.CustomerId;
-            }
-
-            if (rental.ReturnDate != null)
-            {
-                rentalToUpdate.ReturnDate = rental.ReturnDate;
-            }
-            _rentalDal.Update(rentalToUpdate);
+           
+            _rentalDal.Update(rental);
             return new SuccessResult(Messages.RentalUpdated);
 
         }
-        // [CacheRemoveAspect("IRentalService.Get")]
+
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult AddRentalCar(Rental rental)
         {
 
@@ -92,16 +90,14 @@ namespace Bussiness.Concrete
 
         }
 
+        [CacheAspect(duration: 60)]
         public IDataResult<List<RentalDetailDto>> GetRentalDetailsDto()
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.RentalDetailListed);
         }
 
-        //public IDataResult<Rental> GetByCarId(int carId)
-        //{
-           
 
-        //}
+ 
         private IResult CheckIfCarIdExist(int carId)
         {
             var result = _carService.GetByCarId(carId);

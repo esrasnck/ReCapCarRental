@@ -31,11 +31,11 @@ namespace DataAccess.Concrete
             }
         }
 
-        public List<CarDetailDto> GetCarDetail(Expression<Func<Car, bool>> filter = null)
+        public List<CarDetailDto> GetCarDetail(Expression<Func<CarDetailDto, bool>> filter = null)
         {
             using (RentACarContext context = new RentACarContext())
             {
-                IQueryable<CarDetailDto> carDetails = from c in filter is null ? context.Cars : context.Cars.Where(filter)
+                IQueryable<CarDetailDto> carDetails = from c in context.Cars 
                                                       join b in context.Brands
                                                       on c.BrandId equals b.BrandId
                                                       join cl in context.Colors
@@ -54,9 +54,9 @@ namespace DataAccess.Concrete
                                                           ImagePath = (from m in context.CarImages where m.CarId == c.CarId select m.ImagePath).FirstOrDefault(),
                                                           IsRentable = !context.Rentals.Any(r => r.CarId == c.CarId) || !context.Rentals.Any(r => r.CarId == c.CarId && (r.ReturnDate == null || (r.ReturnDate.HasValue && r.ReturnDate > DateTime.Now)))
                                                       };
-                                                          
 
-                return carDetails.ToList();
+
+                return carDetails == null ? carDetails.ToList() : carDetails.Where(filter).ToList();
 
            
         }
