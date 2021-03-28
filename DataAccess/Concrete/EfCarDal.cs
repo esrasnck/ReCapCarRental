@@ -31,12 +31,12 @@ namespace DataAccess.Concrete
             }
         }
 
-        public List<CarDetailDto> GetCarDetail(Expression<Func<CarDetailDto, bool>> filter = null)
+        public List<CarDetailDto> GetCarDetail(Expression<Func<Car, bool>> filter = null)
         {
             using (RentACarContext context = new RentACarContext())
             {
-                IQueryable<CarDetailDto> carDetails = from c in context.Cars 
-                                                      join b in context.Brands
+                var carDetails = from c in filter is null ? context.Cars : context.Cars.Where(filter)
+                                 join b in context.Brands
                                                       on c.BrandId equals b.BrandId
                                                       join cl in context.Colors
                                                       on c.ColorId equals cl.ColorId
@@ -56,7 +56,7 @@ namespace DataAccess.Concrete
                                                       };
 
 
-                return carDetails == null ? carDetails.ToList() : carDetails.Where(filter).ToList();
+                return carDetails.ToList();
 
            
         }

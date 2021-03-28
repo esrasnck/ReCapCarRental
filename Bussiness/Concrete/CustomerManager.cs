@@ -1,6 +1,9 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Bussiness.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -31,80 +34,64 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Customer>(_customerDal.Get(x => x.CustomerId == id), Messages.CustomerById);
         }
 
-      //  [CacheRemoveAspect("ICustomerService.Get")]
+        [CacheRemoveAspect("ICustomerService.Get")]
+
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult AddACustomer(Customer customer)
         {
-            if (!_customerDal.Any(x => x.UserId == customer.UserId))
-            {
-                return new ErrorResult(Messages.CustomerNotAdded);
-            }
             _customerDal.Add(customer);
             return new SuccessResult(Messages.CustomerAdded);
         }
 
 
-      //  [CacheRemoveAspect("ICustomerService.Get")]
+        [CacheRemoveAspect("ICustomerService.Get")]
         public IResult DeleteCustomer(Customer customer)
         {
-            if (_customerDal.Any(x => x.CustomerId == customer.CustomerId || x.UserId == customer.UserId || x.CompanyName == customer.CompanyName))
+            var result = BusinessRules.Run(CheckIfCustomerExits(customer.CustomerId));
+            if (result != null)
             {
-
-                Customer customerFind = _customerDal.GetByID(customer.CustomerId);
-                if (customerFind == null)
-                {
-                    return new ErrorResult(Messages.CustomerNotDeleted);
-                }
-                else
-                {
-                    _customerDal.Delete(customerFind);
-                    return new SuccessResult(Messages.CustomerDeleted);
-                }
+                return new ErrorResult(Messages.CustomerNotDeleted);
             }
-            return new ErrorResult(Messages.CustomerNotDeleted);
+            _customerDal.Delete(customer);
+            return new SuccessResult(Messages.CustomerDeleted);
+
         }
 
 
-      //  [CacheRemoveAspect("ICustomerService.Get")]
+        [CacheRemoveAspect("ICustomerService.Get")]
+
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult UpdateCustomer(Customer customer)
         {
-
-            if (!_customerDal.Any(x => x.CustomerId == customer.CustomerId))
+            var result = BusinessRules.Run(CheckIfCustomerExits(customer.CustomerId));
+            if (result != null)
             {
-                return new ErrorResult(Messages.CustomerNotUpdated);
+                return new ErrorResult(Messages.CustomerNotDeleted);
             }
-            else
-            {
-                Customer customerFind = _customerDal.Get(x => x.CustomerId == customer.CustomerId);
+            _customerDal.Update(customer);
+            return new SuccessResult(Messages.CustomerDeleted);
 
-                if (customerFind != null)
-                {
-                    if (customer.CompanyName != null)
-                    {
-                        customerFind.CompanyName = customer.CompanyName;
-
-                    }
-                    if (customer.UserId>0 && _customerDal.Any(x => x.UserId == customer.UserId))
-                    {
-                        customerFind.UserId = customer.UserId;
-                    }
-                    _customerDal.Update(customerFind);
-                    return new SuccessResult(Messages.CustomerUpdated);
-
-                }
-                else
-                {
-
-                    return new ErrorResult(Messages.CustomerNotUpdated);
-
-                }
-
-            }
         }
 
         public IDataResult<List<CustomerDetailDto>> GetCustomerDetail()
         {
             return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerList(), Messages.CustomerDetailListed);
 
+        }
+
+        public IDataResult<List<CustomerDetailDto>> GetCustomersByCarId(int carId)
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerList(x => x.CarId == carId), Messages.CustomerListed);
+        }
+
+        private IResult CheckIfCustomerExits(int customerId)  // update için
+        {
+            var result = _customerDal.Any(x => x.CustomerId == customerId);
+            if (!result)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
         }
 
     }

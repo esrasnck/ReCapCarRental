@@ -8,5 +8,6 @@ namespace Bussiness.ValidationRules.FluentValidation
 {
    public class CustomerValidator:AbstractValidator<Customer>
     {
+        
     }
 }
