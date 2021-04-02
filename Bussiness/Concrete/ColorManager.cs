@@ -1,6 +1,9 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Bussiness.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -26,85 +29,84 @@ namespace Bussiness.Concrete
 
         public IDataResult<Color> GetByColorID(int id)
         {
-            if (id > 0 && _colorDal.Any(x => x.ColorId == id))
+
+            var result = BusinessRules.Run(CheckIfColorExist(id));
+            if (result != null)
             {
-                return new SuccessDataResult<Color>(_colorDal.Get(x => x.ColorId == id), Messages.ColorByID);
+                return new ErrorDataResult<Color>(Messages.NotColorByID);
             }
-            return new ErrorDataResult<Color>(Messages.NotColorByID);
+            return new SuccessDataResult<Color>(_colorDal.Get(x => x.ColorId == id), Messages.ColorByID);
 
         }
 
-       // [CacheRemoveAspect("IColorService.Get")]
+
+        // secured option kaldı.
+        [ValidationAspect(typeof(ColorValidator))]
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult AddAColor(Color color)
         {
-            if (color != null)
+            var result = BusinessRules.Run(CheckIfColorNameExists(color.ColorName));
+            if (result != null)
             {
-                if (!_colorDal.Any(x => x.ColorName.Contains(color.ColorName)))
-                {
-                    _colorDal.Add(color);
-                    return new SuccessResult(Messages.ColorAdded);
-                }
                 return new ErrorResult(Messages.ColorAlreadyExist);
             }
-            return new ErrorResult(Messages.ColorNotAdded);
-
+            _colorDal.Add(color);
+            return new SuccessResult(Messages.ColorAdded);
         }
-      //  [CacheRemoveAspect("IColorService.Get")]
+
+
+        // secured option buraya da gelecek
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult DeleteColor(Color color)
         {
-            if (color != null)
+            var result = BusinessRules.Run(CheckIfColorExist(color.ColorId));
+            if (result != null)
             {
-                if (_colorDal.Any(x=> x.ColorId == color.ColorId))
-                {
-                    Color colorFind = _colorDal.GetByID(color.ColorId);
-                    if (colorFind == null)
-                    {
-                        return new ErrorResult(Messages.CarNotDeleted);
-                    }
-                    else
-                    {
-                        _colorDal.Delete(color);
-                        return new SuccessResult(Messages.ColorDeleted);
-                    }
-
-                }
-                return new ErrorResult(Messages.ColorNotDeleted);
+                return new ErrorResult(Messages.CarNotDeleted);
             }
-            return new ErrorResult(Messages.ColorNotDeleted);
+            _colorDal.Delete(color);
+            return new SuccessResult(Messages.ColorDeleted);
+
         }
 
-       // [CacheRemoveAspect("IColorService.Get")]
+
+        // secured option buraya da gelecek
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult UpdateColor(Color color)
         {
-            if (color != null)
+            var result = BusinessRules.Run(CheckIfColorExist(color.ColorId));
+            if (result != null)
             {
-                if (color.ColorId>0 && _colorDal.Any(x=> x.ColorId == color.ColorId))
-                {
-                    Color colorFind = _colorDal.GetByID(color.ColorId);
-                    if (colorFind == null)
-                    {
-                        return new ErrorResult(Messages.CarNotUpdated);
-                    }
-                    else
-                    {
-                        if (color.ColorName != null)
-                        {
-                            colorFind.ColorName = color.ColorName;
-                            _colorDal.Update(colorFind);
-                            return new SuccessResult(Messages.ColorUpdated);
-                        }
-                        return new ErrorResult(Messages.ColorNotUpdated);
-                    }
-                }
                 return new ErrorResult(Messages.ColorNotUpdated);
-           
-        
             }
-            return new ErrorResult(Messages.ColorNotUpdated);
+            _colorDal.Update(color);
+            return new SuccessResult(Messages.ColorUpdated);
         }
 
 
+        private IResult CheckIfColorNameExists(string colorName)
+        {
+            if (!String.IsNullOrEmpty(colorName))
+            {
+                var result = _colorDal.Any(x => x.ColorName.ToLower().Contains(colorName.ToLower()));
+                if (!result)
+                {
+                    return new SuccessResult();
+                }
+            }
 
+            return new ErrorResult();
+        }
+
+        private IResult CheckIfColorExist(int colorId)
+        {
+            var result = _colorDal.Any(x => x.ColorId == colorId);
+            if (!result)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
 
     }
 }

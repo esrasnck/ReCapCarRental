@@ -46,8 +46,11 @@ namespace Bussiness.Concrete
         }
         public IDataResult<Card> GetbyCardNumber(string cardNumber)
         {
-            var getCardNumber = _cardDal.Get(u => u.CardNumber == cardNumber);
+            var getCardNumber = _cardDal.Get(u => u.CreditCardNumber == cardNumber);
             return new SuccessDataResult<Card>(getCardNumber);
         }
+
+       
+
     }
 }

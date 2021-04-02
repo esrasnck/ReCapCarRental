@@ -1,6 +1,9 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Bussiness.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -25,82 +28,88 @@ namespace Bussiness.Concrete
 
         public IDataResult<Brand> GetByBrandId(int id)
         {
-            if (id > 0 && _brandDal.Any(x => x.BrandId == id))
+            var result = BusinessRules.Run(CheckIfBrandExist(id));
+            if (result != null)
             {
-                return new SuccessDataResult<Brand>(_brandDal.Get(x => x.BrandId == id), Messages.BrandByID);
+                return new ErrorDataResult<Brand>(Messages.BrandNotListed);
             }
-            return new ErrorDataResult<Brand>(Messages.NotBrandByID);
+            return new SuccessDataResult<Brand>(_brandDal.Get(x => x.BrandId == id), Messages.BrandByID);
 
         }
 
-     //   [CacheRemoveAspect("IBrandService.Get")]
+
+        // secured option kaldı.
+        [ValidationAspect(typeof(BrandValidator))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult AddBrand(Brand brand)
         {
-            if (brand != null)
+            var result = BusinessRules.Run(CheckIfBrandNameExists(brand.BrandName));
+            if (result!=null)
             {
-                if (!_brandDal.Any(x => x.BrandName.Contains(brand.BrandName)))
-                {
-                    _brandDal.Add(brand);
-                    return new SuccessResult(Messages.BrandAdded);
-                }
                 return new ErrorResult(Messages.BrandAllreadyExist);
             }
-            return new ErrorResult(Messages.BrandNotAdded);
-
+            _brandDal.Add(brand);
+            return new SuccessResult(Messages.BrandAdded);
         }
 
-      //  [CacheRemoveAspect("IBrandService.Get")]
+
+        // secured option kaldı.
+
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult UpdateBrand(Brand brand)// azcık kal sen burada
         {
-            if (brand != null)
+            var result = BusinessRules.Run(CheckIfBrandExist(brand.BrandId));
+            if (result != null)
             {
-                if (_brandDal.Any(x => x.BrandId == brand.BrandId) || _brandDal.Any(x => x.BrandName.Contains(brand.BrandName)))
-                {
-                    if (brand.BrandId > 0)
-                    {
-                        Brand brandFind = _brandDal.GetByID(brand.BrandId);
-                        if (brandFind == null)
-                        {
-                            return new ErrorResult(Messages.BrandNotUpdated);
-
-                        }
-                        else
-                        {
-                            if (brand.BrandName != null)
-                            {
-                                brandFind.BrandName = brand.BrandName;
-                                _brandDal.Update(brandFind);
-                                return new SuccessResult(Messages.BrandUpdated);
-                            }
-                            return new ErrorResult(Messages.BrandNotUpdated);
-                        }
-                    }
-                }
+                return new ErrorResult(Messages.BrandNotUpdated);
             }
-            return new ErrorResult(Messages.BrandNotUpdated);
+            _brandDal.Update(brand);
+            return new SuccessResult(Messages.BrandUpdated);
+
         }
 
-       // [CacheRemoveAspect("IBrandService.Get")]
-        public IResult DeleteBrand(Brand brand) 
+
+        // secured option kaldı.
+
+        [CacheRemoveAspect("IBrandService.Get")]
+        public IResult DeleteBrand(Brand brand)
         {
-            if (brand != null)
+            var result = BusinessRules.Run(CheckIfBrandExist(brand.BrandId));
+            if (result != null)
             {
-                if (_brandDal.Any(x => x.BrandId == brand.BrandId))
-                {
-                    Brand brandFind = _brandDal.GetByID(brand.BrandId);
-                    if (brandFind == null)
-                    {
-                        return new ErrorResult(Messages.BrandNotDeleted);
-                    }
-                    else
-                    {
-                        _brandDal.Delete(brand);
-                        return new SuccessResult(Messages.BrandDeleted);
-                    }
-                }
                 return new ErrorResult(Messages.BrandNotDeleted);
             }
-            return new ErrorResult(Messages.BrandNotDeleted);
+            _brandDal.Delete(brand);
+            return new SuccessResult(Messages.BrandDeleted);
+
         }
+
+
+        private IResult CheckIfBrandNameExists(string brandName)
+        {
+            if (!string.IsNullOrEmpty(brandName))
+            {
+                var result = _brandDal.Any(x => x.BrandName.ToLower().Contains(brandName.ToLower()));
+
+                if (!result)
+                {
+                    return new SuccessResult();
+                }
+            }
+           
+           return new ErrorResult();
+        }
+
+        private IResult CheckIfBrandExist(int brandId)
+        {
+            var result = _brandDal.Any(x => x.BrandId == brandId);
+            if (!result)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
+
+
     }
 }

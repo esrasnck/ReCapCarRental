@@ -84,7 +84,7 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerList(x => x.CarId == carId), Messages.CustomerListed);
         }
 
-        private IResult CheckIfCustomerExits(int customerId)  // update için
+        private IResult CheckIfCustomerExits(int customerId)  
         {
             var result = _customerDal.Any(x => x.CustomerId == customerId);
             if (!result)
@@ -93,6 +93,7 @@ namespace Bussiness.Concrete
             }
             return new SuccessResult();
         }
+
 
     }
 }

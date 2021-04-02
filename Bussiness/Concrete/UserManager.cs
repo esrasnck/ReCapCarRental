@@ -9,6 +9,7 @@ using System.Text;
 using Bussiness.Constants.Messages;
 using Core.Entities.Concrete;
 using Core.Aspects.Autofac.Caching;
+using Core.Utilities.Business;
 
 namespace Bussiness.Concrete
 {
@@ -22,27 +23,18 @@ namespace Bussiness.Concrete
 
         }
 
-       //  [CacheRemoveAspect("IUserService.Get")]
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User user)
         {
-            if (_userDal.Any(x=>x.UserId ==user.UserId  || x.Email == user.Email || x.FirstName ==user.FirstName || x.LastName == user.LastName))
-            {
-                User userToDelete = _userDal.Get(x =>
-                    x.UserId == user.UserId || x.Email == user.Email || x.FirstName == user.FirstName ||
-                    x.LastName == user.LastName);
-                if (userToDelete == null)
-                {
-                    return new ErrorResult(Messages.UserCantDeleted);
-                }
-                else
-                {
-                    _userDal.Delete(userToDelete);
-                    return new SuccessResult(Messages.UserDeleted);
-                }
 
-                
+            var result = BusinessRules.Run(CheckIfUserExists(user.UserId));
+            if (result != null)
+            {
+                return new ErrorResult(Messages.UserCantDeleted);
             }
-            return new ErrorResult(Messages.UserNotFound);
+            _userDal.Delete(user);
+            return new SuccessResult(Messages.UserDeleted);
+
         }
 
         public IDataResult<List<User>> GetAll()
@@ -60,57 +52,24 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<User>(_userDal.GetByID(userId), Messages.GetByUserId);
         }
 
-      //  [CacheRemoveAspect("IUserService.Get")]
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User user)
         {
-            if (!_userDal.Any(x=> x.UserId == user.UserId))
+            var result = BusinessRules.Run(CheckIfUserExists(user.UserId));
+            if (result != null)
             {
-                return new ErrorResult(Messages.UserNotFound);
+                return new ErrorResult(Messages.UserCantDeleted);
             }
-            else
-            {
-                User userToUpdate = _userDal.Get(x => x.UserId == user.UserId);
-                if (userToUpdate != null)
-                {
-                    if (user.FirstName != null)
-                    {
-                        userToUpdate.FirstName = user.FirstName.ToUpper();
-                    }
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
 
-                    if (user.LastName!=null)
-                    {
-                        userToUpdate.LastName = user.LastName.ToUpper();
-                    }
-
-                    if (user.Email !=null)
-                    {
-                        userToUpdate.Email = user.Email.ToLower();
-                    }
-
-                    if (user.Status)
-                    {
-                        userToUpdate.Status = user.Status;
-                    }
-                    _userDal.Update(userToUpdate);
-                    return new SuccessResult(Messages.UserUpdated);
-                }
-                else
-                {
-                    return new ErrorResult(Messages.UserCantUpdated);
-                }
-            }
         }
-       // [CacheRemoveAspect("IUserService.Get")]
+        
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult AddUser(User user)
         {
-            if (user !=null)
-            {
-                   _userDal.Add(user);
+            _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
-            }
-
-            return new ErrorResult(Messages.UserCantAdded);
-
         }
 
         public IDataResult<User> GetByMail(string email)
@@ -123,6 +82,16 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
-  
+        private IResult CheckIfUserExists(int userId)
+        {
+            var result = _userDal.Any(x => x.UserId == userId);
+            if (!result)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+
+        }
+
     }
 }

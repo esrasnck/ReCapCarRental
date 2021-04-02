@@ -76,7 +76,7 @@ namespace Bussiness.Concrete
 
         }
 
-        [CacheRemoveAspect("IRentalService.Get")]
+       // [CacheRemoveAspect("IRentalService.Get")]
         public IResult AddRentalCar(Rental rental)
         {
 
@@ -110,16 +110,14 @@ namespace Bussiness.Concrete
 
         private IResult IsCarAvaliable(int carId)
         {
-            var result = _rentalDal.FirstOrDefault(x => x.CarId == carId);
-            if (result != null)
+            var result = _rentalDal.Any(x => x.CarId == carId && (x.ReturnDate == null || x.ReturnDate <= DateTime.Now));
+            if (!result)
             {
-                if (result.ReturnDate.HasValue && result.ReturnDate <= DateTime.Now)
-                {
-                    return new SuccessResult();
-                }
-                return new ErrorResult();
+                
+               return new SuccessResult();
+                
             }
-            return new SuccessResult();
+            return new ErrorResult();
 
         }
 

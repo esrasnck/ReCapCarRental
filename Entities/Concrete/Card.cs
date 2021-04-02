@@ -9,9 +9,9 @@ namespace Entities.Concrete
     {
         public int CardId { get; set; }
         public int CustomerId { get; set; }
-        public string CardNumber { get; set; }
-        public string CardPassword { get; set; }
-        public decimal Money { get; set; }
-
+        public string CreditCardNumber { get; set; }
+        public string ExpirationDate { get; set; }
+        public string SecurityCode { get; set; }
+        
     }
 }

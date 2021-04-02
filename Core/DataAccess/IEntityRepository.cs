@@ -37,6 +37,7 @@ namespace Core.DataAccess
 
         T FirstOrDefault(Expression<Func<T, bool>> exp);
 
+        T LastOrDefault(Expression<Func<T, bool>> exp);
 
         /// <summary>
         /// Veri kaynağına entity ekler

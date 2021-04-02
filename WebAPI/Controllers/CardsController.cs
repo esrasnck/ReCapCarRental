@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public IActionResult GetbyColorId(string cardNumber)
+        public IActionResult GetbyCardId(string cardNumber)
         {
             var result = _cardService.GetbyCardNumber(cardNumber);
             if (result.Success)

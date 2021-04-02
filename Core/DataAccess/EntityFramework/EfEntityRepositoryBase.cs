@@ -101,5 +101,13 @@ namespace Core.DataAccess.EntityFramework
                 return context.Set<TEntity>().FirstOrDefault(exp);
             }
         }
+
+        public TEntity LastOrDefault(Expression<Func<TEntity, bool>> exp)
+        {
+            using (TContext context = new TContext())
+            {
+                return context.Set<TEntity>().LastOrDefault(exp);
+            }
+        }
     }
 }
