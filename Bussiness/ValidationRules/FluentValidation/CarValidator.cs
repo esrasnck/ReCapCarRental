@@ -14,6 +14,13 @@ namespace Bussiness.ValidationRules.FluentValidation
             RuleFor(p => p.CarName).MinimumLength(2);
             RuleFor(p => p.DailyPrice).NotEmpty();
             RuleFor(p => p.DailyPrice).GreaterThan(0);
+            RuleFor(x => x.BrandId).NotEmpty();
+            RuleFor(x => x.ColorId).NotEmpty();
+            RuleFor(x => x.Findeks).NotEmpty();
+            RuleFor(x => x.ModelYear).NotEmpty();
+            RuleFor(x => x.Description).NotEmpty();
         }
     }
 }
+
+

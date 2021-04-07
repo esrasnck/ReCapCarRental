@@ -18,11 +18,13 @@ namespace Bussiness.Concrete
     {
         private IRentalDal _rentalDal;
         private ICarService _carService;
+        private ICustomerService _customerService;
 
-        public RentalManager(IRentalDal rentalDal, ICarService carService)
+        public RentalManager(IRentalDal rentalDal, ICarService carService,ICustomerService customerService)
         {
             _rentalDal = rentalDal;
             _carService = carService;
+            _customerService = customerService;
         }
         [CacheAspect(duration:60)]
         public IDataResult<List<Rental>> GetAll()
@@ -108,19 +110,22 @@ namespace Bussiness.Concrete
             return new ErrorResult();
         }
 
+
+        // koşuldan bana false dönerse...
         private IResult IsCarAvaliable(int carId)
         {
             var result = _rentalDal.Any(x => x.CarId == carId && (x.ReturnDate == null || x.ReturnDate <= DateTime.Now));
-            if (!result)
+            if (result)
             {
-                
-               return new SuccessResult();
+
+               return new ErrorResult();
                 
             }
-            return new ErrorResult();
+            return new SuccessResult();
 
         }
 
+     
         private IResult CheckIsRentalExits(int rentalId)
         {
             var result = _rentalDal.Any(x => x.RentalId == rentalId);

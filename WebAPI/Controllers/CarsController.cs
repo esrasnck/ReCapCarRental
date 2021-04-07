@@ -2,6 +2,7 @@
 using Bussiness.Constants.Messages;
 using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -49,9 +50,9 @@ namespace WebAPI.Controllers
             var result = _carService.GetByCarId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet]
@@ -60,10 +61,10 @@ namespace WebAPI.Controllers
             var result = _carService.GetByBrandId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
         }
 
@@ -73,9 +74,9 @@ namespace WebAPI.Controllers
             var result = _carService.GetByColorId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost]
@@ -84,9 +85,9 @@ namespace WebAPI.Controllers
             var result = _carService.AddACar(car);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost]
@@ -95,9 +96,9 @@ namespace WebAPI.Controllers
             var resullt = _carService.UpdateCar(car);
             if (resullt.Success)
             {
-                return Ok(resullt.Message);
+                return Ok(resullt);
             }
-            return BadRequest(resullt.Message);
+            return BadRequest(resullt);
         }
         [HttpPost]
         public IActionResult CarDelete([FromBody]Car car)
@@ -105,9 +106,9 @@ namespace WebAPI.Controllers
             var result = _carService.DeleteCar(car);
             if (result.Success)
             {
-                return Ok(result.Message);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
 
 
         }
@@ -159,5 +160,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
 
         }
+
+
     }
 }

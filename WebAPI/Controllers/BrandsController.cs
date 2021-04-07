@@ -26,9 +26,9 @@ namespace WebAPI.Controllers
             var result = _brandService.GetByBrandId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost]  
@@ -50,19 +50,19 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost] 
 
-        public IActionResult BrandDeleted([FromBody] Brand brand)
+        public IActionResult Deleted(Brand brand)
         {
             var result = _brandService.DeleteBrand(brand);
             if (result.Success)
             {
                 return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet]  

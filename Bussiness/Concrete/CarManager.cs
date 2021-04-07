@@ -32,7 +32,7 @@ namespace Bussiness.Concrete
             _colorService = colorService;
         }
 
-        [SecuredOperation("admin")]
+       // [SecuredOperation("admin")]
 
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
@@ -76,7 +76,10 @@ namespace Bussiness.Concrete
 
         }
 
-      //  [SecuredOperation("admin")]
+
+
+
+        //  [SecuredOperation("admin")]
 
         [CacheAspect]
         [PerformanceAspect(5)]

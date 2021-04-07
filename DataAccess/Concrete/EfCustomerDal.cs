@@ -30,6 +30,7 @@ namespace DataAccess.Concrete
                                                                     CarId = cr.CarId,
                                                                     CustomerName = u.FirstName + " " + u.LastName,
                                                                     CompanyName = c.CompanyName,
+                                                                    Findeks = c.Findeks
                                                                    
                                                                 };
                 return filter == null ? customerDetails.ToList() : customerDetails.Where(filter).ToList();

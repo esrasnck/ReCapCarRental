@@ -12,6 +12,8 @@ namespace Entities.Dtos
         public int CarId { get; set; }
         public string CustomerName { get; set; }
         public string CompanyName { get; set; }
-    
+
+        public int Findeks { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Bussiness.Abstract;
+using Bussiness.Business.BusinessAspects.Autofac;
 using Bussiness.Constants.Messages;
 using Bussiness.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -40,7 +41,7 @@ namespace Bussiness.Concrete
         }
 
 
-        // secured option kaldı.
+       // [SecuredOperation("admin")]
         [ValidationAspect(typeof(ColorValidator))]
         [CacheRemoveAspect("IColorService.Get")]
         public IResult AddAColor(Color color)

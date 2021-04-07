@@ -20,5 +20,7 @@ namespace Entities.Dtos
         public string Description { get; set; }
         public bool IsRentable { get; set; }
         public string ImagePath { get; set; }
+
+        public int Findeks { get; set; }
     }
 }

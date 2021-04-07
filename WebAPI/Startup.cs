@@ -78,6 +78,8 @@ namespace WebAPI
                 app.UseHsts();
             }
 
+            app.ConfigureCustomExceptionMiddleware();
+
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyOrigin());
 
             app.UseHttpsRedirection();

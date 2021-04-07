@@ -14,7 +14,6 @@ namespace Entities.Concrete
         public string ModelYear { get; set; }
         public decimal DailyPrice { get; set; }
         public string Description { get; set; }
-
-      //   public int MininumFindeks { get; set; }  // customer'ın  car dan küçükse kiralama
+        public int Findeks { get; set; }
     }
 }

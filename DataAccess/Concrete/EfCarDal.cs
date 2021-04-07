@@ -46,11 +46,13 @@ namespace DataAccess.Concrete
                                                           BrandId = b.BrandId,
                                                           ColorId = cl.ColorId,
                                                           CarName = c.CarName,
+                                                          Findeks = c.Findeks,
                                                           BrandName = b.BrandName,
                                                           ColorName = cl.ColorName,
                                                           ModelYear = c.ModelYear,
                                                           DailyPrice = c.DailyPrice.ToString(),
                                                           Description = c.Description,
+                                                  
                                                           ImagePath = (from m in context.CarImages where m.CarId == c.CarId select m.ImagePath).FirstOrDefault(),
                                                           IsRentable = !context.Rentals.Any(r => r.CarId == c.CarId) || !context.Rentals.Any(r => r.CarId == c.CarId && (r.ReturnDate == null || (r.ReturnDate.HasValue && r.ReturnDate > DateTime.Now)))
                                                       };

@@ -50,6 +50,7 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Card>(getCardNumber);
         }
 
+        
        
 
     }
