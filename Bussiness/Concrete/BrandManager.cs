@@ -1,4 +1,5 @@
 ﻿using Bussiness.Abstract;
+using Bussiness.Business.BusinessAspects.Autofac;
 using Bussiness.Constants.Messages;
 using Bussiness.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
@@ -37,8 +38,7 @@ namespace Bussiness.Concrete
 
         }
 
-
-        // secured option kaldı.
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult AddBrand(Brand brand)
@@ -52,8 +52,7 @@ namespace Bussiness.Concrete
             return new SuccessResult(Messages.BrandAdded);
         }
 
-
-        // secured option kaldı.
+        [SecuredOperation("admin")]
 
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult UpdateBrand(Brand brand)// azcık kal sen burada
@@ -69,7 +68,7 @@ namespace Bussiness.Concrete
         }
 
 
-        // secured option kaldı.
+        [SecuredOperation("admin")]
 
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult DeleteBrand(Brand brand)

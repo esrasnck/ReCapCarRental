@@ -32,7 +32,7 @@ namespace Bussiness.Concrete
             _colorService = colorService;
         }
 
-       // [SecuredOperation("admin")]
+        [SecuredOperation("admin")]
 
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
@@ -47,8 +47,8 @@ namespace Bussiness.Concrete
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
-      
-        
+
+        [SecuredOperation("admin")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult UpdateCar(Car car)
         {
@@ -62,7 +62,7 @@ namespace Bussiness.Concrete
 
         }
 
-
+        [SecuredOperation("admin")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult DeleteCar(Car car)
         {
@@ -79,7 +79,7 @@ namespace Bussiness.Concrete
 
 
 
-        //  [SecuredOperation("admin")]
+       
 
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -208,7 +208,7 @@ namespace Bussiness.Concrete
         private IResult IsCarExists(int carId)
         {
             var result = _carDal.GetByID(carId);
-            if (result!=null)   // ==null error gönder
+            if (result!=null)   
             {
                 return new SuccessResult();
             }

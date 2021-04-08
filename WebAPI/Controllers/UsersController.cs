@@ -26,9 +26,9 @@ namespace WebAPI.Controllers   // test edilmedi :(
             var result = _userService.GetAll();
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet]
@@ -37,9 +37,9 @@ namespace WebAPI.Controllers   // test edilmedi :(
             var result = _userService.GetByUserId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpGet]
@@ -48,9 +48,9 @@ namespace WebAPI.Controllers   // test edilmedi :(
             var result = _userService.GetByCustomerId(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
 
@@ -87,5 +87,6 @@ namespace WebAPI.Controllers   // test edilmedi :(
             return BadRequest(result.Message);
         }
 
+   
     }
 }
