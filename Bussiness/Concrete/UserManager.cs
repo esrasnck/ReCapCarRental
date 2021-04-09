@@ -10,6 +10,8 @@ using Bussiness.Constants.Messages;
 using Core.Entities.Concrete;
 using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Business;
+using Entities.Dtos;
+using Core.Utilities.Security.Hashing;
 
 namespace Bussiness.Concrete
 {
@@ -55,12 +57,23 @@ namespace Bussiness.Concrete
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User user)
         {
-            var result = BusinessRules.Run(CheckIfUserExists(user.UserId));
-            if (result != null)
+            //var result = BusinessRules.Run(CheckIfUserExists(user.UserId));
+            //if (result != null)
+            //{
+            //    return new ErrorResult(Messages.UserCantDeleted);
+            //}
+
+            var currentUser = _userDal.Get(u => u.UserId == user.UserId);
+            if(currentUser == null)
             {
-                return new ErrorResult(Messages.UserCantDeleted);
+                return new ErrorResult("User Doesn't exists");
             }
-            _userDal.Update(user);
+
+            var userForUpdate = user;
+            userForUpdate.Status = currentUser.Status;
+            userForUpdate.PasswordHash = currentUser.PasswordHash;
+            userForUpdate.PasswordSalt = currentUser.PasswordSalt;
+            _userDal.Update(userForUpdate);
             return new SuccessResult(Messages.UserUpdated);
 
         }
@@ -93,5 +106,25 @@ namespace Bussiness.Concrete
 
         }
 
+      
+        public IResult ChangeUserPassword(ChangePasswordDto changePasswordDto)
+        {
+            byte[] passwordHash, passwordSalt;
+            var userToCheck = GetByMail(changePasswordDto.Email);
+            if (userToCheck.Data == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            if (!HashingHelper.VerifyPasswordHash(changePasswordDto.OldPassWord, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
+            {
+                return new ErrorResult(Messages.PasswordError);
+            }
+            HashingHelper.CreatePasswordHash(changePasswordDto.NewPassword, out passwordHash, out passwordSalt);
+            userToCheck.Data.PasswordHash = passwordHash;
+            userToCheck.Data.PasswordSalt = passwordSalt;
+            _userDal.Update(userToCheck.Data);
+            return new SuccessResult(Messages.PasswordChanged);
+        }
+        
     }
 }

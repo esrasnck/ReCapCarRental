@@ -94,6 +94,10 @@ namespace Bussiness.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<Customer> GetByUserId(int userId)
+        {
+            return new SuccessDataResult<Customer>(_customerDal.Get(x => x.UserId == userId), "Fatih");
+        }
 
     }
 }

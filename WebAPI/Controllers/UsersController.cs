@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entities.Concrete;
 using Core.Entities.Concrete;
+using Entities.Dtos;
 
 namespace WebAPI.Controllers   // test edilmedi :(
 {
@@ -76,6 +77,8 @@ namespace WebAPI.Controllers   // test edilmedi :(
             return BadRequest(result.Message);
         }
 
+
+        // bunu nerede kullandım ki? ne alaka?
         [HttpPost]
         public IActionResult CustomerDelete([FromBody] User user)
         {
@@ -87,6 +90,18 @@ namespace WebAPI.Controllers   // test edilmedi :(
             return BadRequest(result.Message);
         }
 
-   
+        [HttpPost]
+        public IActionResult ChangeUserPassword(ChangePasswordDto changeUserPassword)
+        {
+            var result = _userService.ChangeUserPassword(changeUserPassword);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
     }
 }

@@ -139,5 +139,7 @@ namespace Bussiness.Constants.Messages
         public static string CardDeleted = "Card silindi";
         public static string CardListed = "Card Listelendi";
         public static string CardUpdated = "Card Güncellendi";
+
+        public static string PasswordChanged = "Şifre güncellendi";
     }
 }
