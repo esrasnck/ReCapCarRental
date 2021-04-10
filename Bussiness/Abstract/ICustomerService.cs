@@ -17,5 +17,7 @@ namespace Bussiness.Abstract
         IDataResult<Customer> GetByUserId(int userId);
         IDataResult<List<CustomerDetailDto>> GetCustomerDetail();
         IDataResult<List<CustomerDetailDto>> GetCustomersByCarId(int carId);
+
+        IDataResult<int> Findeks(int customerId);
     }
 }

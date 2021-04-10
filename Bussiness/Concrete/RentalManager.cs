@@ -82,7 +82,7 @@ namespace Bussiness.Concrete
         public IResult AddRentalCar(Rental rental)
         {
 
-            var result = BusinessRules.Run(CheckIfCarIdExist(rental.CarId), IsCarAvaliable(rental.CarId));
+            var result = BusinessRules.Run(CheckIfCarIdExist(rental.CarId), IsCarAvaliable(rental.CarId),FindeksCheck(rental.CarId,rental.CustomerId));
             if (result != null)
             {
                 return new ErrorResult(Messages.RentalNotAdded);
@@ -110,8 +110,6 @@ namespace Bussiness.Concrete
             return new ErrorResult();
         }
 
-
-        // koşuldan bana false dönerse...
         private IResult IsCarAvaliable(int carId)
         {
             var result = _rentalDal.Any(x => x.CarId == carId && (x.ReturnDate == null || x.ReturnDate <= DateTime.Now));
@@ -135,6 +133,17 @@ namespace Bussiness.Concrete
             }
 
             return new SuccessResult();
+        }
+
+        private IResult FindeksCheck(int carId, int customerId)
+        {
+            var customerFindex = _customerService.Findeks(customerId);
+            var carFindex = _carService.CarFindex(carId);
+            if(carFindex.Data> customerFindex.Data)
+            {
+                return new ErrorResult(Messages.CannotRent);
+            }
+            return new SuccessResult(Messages.CanRent);
         }
     }
 }

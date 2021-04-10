@@ -99,5 +99,10 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Customer>(_customerDal.Get(x => x.UserId == userId), "Fatih");
         }
 
+        public IDataResult<int> Findeks(int customerId)
+        {
+            var result = _customerDal.Get(x => x.CustomerId == customerId);
+            return new SuccessDataResult<int>(result.Findeks);
+        }
     }
 }

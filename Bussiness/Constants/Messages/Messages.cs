@@ -141,5 +141,8 @@ namespace Bussiness.Constants.Messages
         public static string CardUpdated = "Card Güncellendi";
 
         public static string PasswordChanged = "Şifre güncellendi";
+
+        public static string CannotRent = "Findeks yeterli değil";
+        public static string CanRent = "Findeks yeterli";
     }
 }

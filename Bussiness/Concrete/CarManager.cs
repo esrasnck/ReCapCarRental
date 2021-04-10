@@ -76,11 +76,6 @@ namespace Bussiness.Concrete
 
         }
 
-
-
-
-       
-
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetAll()
@@ -100,7 +95,6 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(x => x.CarId == id), Messages.CarByID);
         }
 
-       
         public IDataResult<List<Car>> GetByBrandId(int id)
         {
 
@@ -125,7 +119,6 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(x => x.ColorId == id), Messages.CarByColorID);
         }
 
-
         // dto mevzusu
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
@@ -137,7 +130,6 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(), Messages.CarDetailList);
         }
 
-
         public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
         {
             var result = BusinessRules.Run(IsColorExists(colorId));
@@ -147,7 +139,6 @@ namespace Bussiness.Concrete
             }
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(x => x.ColorId == colorId), Messages.CarDetailList);
         }
-
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
         {
@@ -170,7 +161,6 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(x => x.CarId == carId), Messages.CarDetailList);
         }
 
-
         public IDataResult<List<CarDetailDto>> GetCarDetailsByColorAndByBrand(int colorId, int brandId)
         {
             var result = BusinessRules.Run(IsColorExists(colorId), IsBrandExists(brandId));
@@ -182,8 +172,6 @@ namespace Bussiness.Concrete
 
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetail(c => c.ColorId == colorId && c.BrandId == brandId),Messages.CarByBrandAndCar);
         }
-
-
 
         private IResult  IsBrandExists(int brandId)
         {
@@ -226,6 +214,12 @@ namespace Bussiness.Concrete
                 }
             }
             return new ErrorResult();
+        }
+
+        public IDataResult<int> CarFindex(int carId)
+        {
+            var result = _carDal.Get(x => x.CarId == carId);
+            return new SuccessDataResult<int>(result.Findeks);
         }
     }
 }
