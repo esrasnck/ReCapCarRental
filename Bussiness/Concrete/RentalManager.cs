@@ -116,7 +116,7 @@ namespace Bussiness.Concrete
             if (result)
             {
 
-               return new ErrorResult();
+               return new ErrorResult(Messages.CarIsNotAvaliable);
                 
             }
             return new SuccessResult();
@@ -135,7 +135,7 @@ namespace Bussiness.Concrete
             return new SuccessResult();
         }
 
-        private IResult FindeksCheck(int carId, int customerId)
+        public IResult FindeksCheck(int carId, int customerId)
         {
             var customerFindex = _customerService.Findeks(customerId);
             var carFindex = _carService.CarFindex(carId);

@@ -70,7 +70,7 @@ namespace Bussiness.Concrete
         {
             if (!_cardService.GetAllCards().Data.Any(x => x.CreditCardNumber == cardNumber &&  x.ExpirationDate == expirationDate && x.SecurityCode == securityCode))
             {
-                return new ErrorResult();
+                return new ErrorResult("Kredi Kartı Bilgileri Yanlış");
             }
             return new SuccessResult();
         }

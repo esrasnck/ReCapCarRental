@@ -50,7 +50,7 @@ namespace DataAccess.Concrete
                                                           BrandName = b.BrandName,
                                                           ColorName = cl.ColorName,
                                                           ModelYear = c.ModelYear,
-                                                          DailyPrice = c.DailyPrice.ToString(),
+                                                          DailyPrice = c.DailyPrice,
                                                           Description = c.Description,
                                                   
                                                           ImagePath = (from m in context.CarImages where m.CarId == c.CarId select m.ImagePath).FirstOrDefault(),

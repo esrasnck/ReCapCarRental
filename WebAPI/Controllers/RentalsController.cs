@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             var result = _rentalService.GetByID(id);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }
@@ -87,6 +87,17 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet]
+
+        public IActionResult CheckFindeks(int carId, int customerId)
+        {
+            var result = _rentalService.FindeksCheck(carId, customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
 
     }

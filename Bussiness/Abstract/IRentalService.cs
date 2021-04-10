@@ -15,7 +15,8 @@ namespace Bussiness.Abstract
         IResult DeleteRentalCar(Rental rental);
         IResult UpdateRentalCar(Rental rental);
         IDataResult<List<RentalDetailDto>> GetRentalDetailsDto();
+        IResult FindeksCheck(int carId, int customerId);
 
-      
+
     }
 }

@@ -144,5 +144,7 @@ namespace Bussiness.Constants.Messages
 
         public static string CannotRent = "Findeks yeterli değil";
         public static string CanRent = "Findeks yeterli";
+
+        public static string CarIsNotAvaliable = "Araba Kiralanmaya uygun değil";
     }
 }
