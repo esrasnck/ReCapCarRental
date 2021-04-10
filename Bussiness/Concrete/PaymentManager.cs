@@ -23,12 +23,7 @@ namespace Bussiness.Concrete
 
         public IResult Add(Payment payment)
         {
-            var result = BusinessRules.Run(CheckIsCreditCardExist(payment.CreditCardNumber, payment.ExpirationDate, payment.SecurityCode));
-
-            if (result != null)
-            {
-                return result;
-            }
+         
             _paymentDal.Add(payment);
 
             return new SuccessResult();
@@ -66,13 +61,6 @@ namespace Bussiness.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckIsCreditCardExist(string cardNumber, string expirationDate, string securityCode)
-        {
-            if (!_cardService.GetAllCards().Data.Any(x => x.CreditCardNumber == cardNumber &&  x.ExpirationDate == expirationDate && x.SecurityCode == securityCode))
-            {
-                return new ErrorResult("Kredi Kartı Bilgileri Yanlış");
-            }
-            return new SuccessResult();
-        }
+   
     }
 }

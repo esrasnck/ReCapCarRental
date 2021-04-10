@@ -1,5 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Bussiness.Constants.Messages;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -19,6 +20,11 @@ namespace Bussiness.Concrete
         }
         public IResult Add(Card card)
         {
+            var result = BusinessRules.Run(CheckIsCreditCardExist(card.CreditCardNumber, card.ExpirationDate, card.SecurityCode));
+            if (result == null)
+            {
+                return new ErrorResult();
+            }
             _cardDal.Add(card);
             return new SuccessResult(Messages.CardAdded);
         }
@@ -50,8 +56,15 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<Card>(getCardNumber);
         }
 
-        
-       
+        private IResult CheckIsCreditCardExist(string cardNumber, string expirationDate, string securityCode)
+        {
+            if (!_cardDal.Any(x => x.CreditCardNumber == cardNumber && x.ExpirationDate == expirationDate && x.SecurityCode == securityCode))
+            {
+                return new ErrorResult("Kredi Kartı Mevcut");
+            }
+            return new SuccessResult();
+        }
+
 
     }
 }
