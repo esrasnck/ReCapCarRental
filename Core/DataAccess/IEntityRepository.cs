@@ -16,7 +16,7 @@ namespace Core.DataAccess
         /// <returns> listesi döndürür.</returns>
         List<T> GetAll(Expression<Func<T, bool>> filter = null);
 
-        /// <summary>  // todo: sonradan bak.
+        /// <summary>  
         /// Veri kaynağından, entity'i şarta göre getirir.
         /// </summary>
         /// <param name=""></param>
@@ -29,8 +29,6 @@ namespace Core.DataAccess
         /// <returns></returns>
         T GetByID(int id);
 
-
-        // todo: ne işe yaradığını yazmayı unutma
         object Select(Expression<Func<T, bool>> exp);
 
         bool Any(Expression<Func<T, bool>> exp);

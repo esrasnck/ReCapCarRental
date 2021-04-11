@@ -14,7 +14,7 @@ using Bussiness.ValidationRules.FluentValidation;
 
 namespace Bussiness.Concrete
 {
-    public class RentalManager : IRentalService   // refactoring done
+    public class RentalManager : IRentalService  
     {
         private IRentalDal _rentalDal;
         private ICarService _carService;
@@ -78,7 +78,7 @@ namespace Bussiness.Concrete
 
         }
 
-       // [CacheRemoveAspect("IRentalService.Get")]
+       [CacheRemoveAspect("IRentalService.Get")]
         public IResult AddRentalCar(Rental rental)
         {
 

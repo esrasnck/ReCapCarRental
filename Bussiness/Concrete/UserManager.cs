@@ -57,11 +57,7 @@ namespace Bussiness.Concrete
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User user)
         {
-            //var result = BusinessRules.Run(CheckIfUserExists(user.UserId));
-            //if (result != null)
-            //{
-            //    return new ErrorResult(Messages.UserCantDeleted);
-            //}
+        
 
             var currentUser = _userDal.Get(u => u.UserId == user.UserId);
             if(currentUser == null)

@@ -55,7 +55,7 @@ namespace Bussiness.Concrete
         [SecuredOperation("admin")]
 
         [CacheRemoveAspect("IBrandService.Get")]
-        public IResult UpdateBrand(Brand brand)// azcık kal sen burada
+        public IResult UpdateBrand(Brand brand)
         {
             var result = BusinessRules.Run(CheckIfBrandExist(brand.BrandId));
             if (result != null)

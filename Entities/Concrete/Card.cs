@@ -13,6 +13,6 @@ namespace Entities.Concrete
         public string CreditCardNumber { get; set; }
         public string ExpirationDate { get; set; }
         public string SecurityCode { get; set; }
-        public decimal Debts { get; set; }
+        public decimal? Debts { get; set; }
     }
 }

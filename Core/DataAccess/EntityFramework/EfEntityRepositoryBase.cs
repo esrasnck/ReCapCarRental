@@ -55,16 +55,7 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                #region if version
-                //if (filter == null)
-                //{
-                //    return context.Set<Product>().ToList();
-                //}
-                //else
-                //{
-                //    return context.Set<Product>().Where(filter).ToList();
-                //}  //todo: sonradan dön bak!!!
-                #endregion
+          
 
                 return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
             }

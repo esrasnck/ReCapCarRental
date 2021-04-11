@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Utilities.Results
 {
-    // temel void
+
     public interface IResult
     {
         bool Success { get; }

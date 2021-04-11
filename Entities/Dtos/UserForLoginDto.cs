@@ -7,7 +7,7 @@ namespace Entities.Dtos
 {
     public class UserForLoginDto:IDto
     {
-        // frontend'den gelecek
+        
         public string Email { get; set; }
         public string Password { get; set; }
 

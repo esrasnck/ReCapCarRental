@@ -9,7 +9,7 @@ using Entities.Concrete;
 using Core.Entities.Concrete;
 using Entities.Dtos;
 
-namespace WebAPI.Controllers   // test edilmedi :(
+namespace WebAPI.Controllers   
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

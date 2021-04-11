@@ -119,7 +119,7 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(x => x.ColorId == id), Messages.CarByColorID);
         }
 
-        // dto mevzusu
+      
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
           

@@ -21,7 +21,6 @@ namespace Bussiness.Abstract
 
         IDataResult<List<CarDetailDto>> GetCarDetails();
 
-        // todo : HANGİ TARAF DOĞRU BAK
         IDataResult<List<Car>> GetByColorId(int id);
         IDataResult<List<Car>> GetByBrandId(int id);
         IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId);

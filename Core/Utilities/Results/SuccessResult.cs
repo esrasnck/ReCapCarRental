@@ -10,7 +10,7 @@ namespace Core.Utilities.Results
         {
 
         }
-        public SuccessResult():base(true) //=> base'in tek parametreli olanı çalışsın
+        public SuccessResult():base(true) 
         {
 
         }
