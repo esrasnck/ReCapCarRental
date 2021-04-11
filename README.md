@@ -6,7 +6,7 @@
 - Autofac
 - FluentValidation
 
-### BackendTechniques
+### Backend Techniques
 - Layered Architecture Design Pattern
 - AOP
 - JWT
