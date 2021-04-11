@@ -40,9 +40,26 @@ namespace Bussiness.Concrete
             return new SuccessDataResult<List<Card>>(_cardDal.GetAll(), Messages.CardListed);
         }
 
-        public IDataResult<Card> GetByCustomerId(int id)
+        public IDataResult<Card> GetByCustomerId(int customerId)
         {
-            return new SuccessDataResult<Card>(_cardDal.Get(c => c.CustomerId == id));
+            var result = BusinessRules.Run(IsCustomerExist(customerId));
+            if (result==null)
+            {
+                return new ErrorDataResult<Card>();
+            }
+
+            return new SuccessDataResult<Card>(_cardDal.Get(c => c.CustomerId ==customerId));
+        }
+
+        public IDataResult<List<Card>> GetCardListByCustomerId(int customerId)
+        {
+            var result = BusinessRules.Run(IsCustomerExist(customerId));
+            if(result != null)
+            {
+                return new ErrorDataResult<List<Card>>();
+            }
+            return new SuccessDataResult<List<Card>>(_cardDal.GetAll(x => x.CustomerId == customerId));
+
         }
 
         public IResult Update(Card card)
@@ -65,6 +82,14 @@ namespace Bussiness.Concrete
             return new SuccessResult();
         }
 
-
+        private IResult IsCustomerExist(int customerId)
+        {
+            var result = _cardDal.Any(x => x.CustomerId == customerId);
+            if(result == false)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
     }
 }

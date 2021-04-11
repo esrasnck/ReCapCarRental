@@ -12,7 +12,9 @@ namespace Bussiness.Abstract
         IResult Update(Card card);
         IResult Delete(Card card);
         IDataResult<List<Card>> GetAllCards();
-        IDataResult<Card> GetByCustomerId(int id);
+        IDataResult<Card> GetByCustomerId(int customerId);
         IDataResult<Card> GetbyCardNumber(string cardNumber);
+
+        IDataResult<List<Card>> GetCardListByCustomerId(int customerId);
     }
 }
