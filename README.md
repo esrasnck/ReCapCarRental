@@ -1,11 +1,12 @@
-### BackendTecnologies
+### Backend Tecnologies
 
 - Asp.Net Core for Restful api
 - MsSql
 - EntityFramework Core
 - Autofac
 - FluentValidation
-- BackendTechniques
+
+### BackendTechniques
 - Layered Architecture Design Pattern
 - AOP
 - JWT
